@@ -1,0 +1,24 @@
+[project]
+name = "dagshub-import-export"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "KBolashev", email = "kirill@dagshub.com" }
+]
+requires-python = ">=3.11.7"
+dependencies = [
+    "click>=8.2.1",
+    "dagshub",
+    "requests>=2.32.4",
+]
+
+[project.scripts]
+dagshub-import-export = "dagshub_import_export:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.uv.sources]
+dagshub = { path = "../client", editable = true }
