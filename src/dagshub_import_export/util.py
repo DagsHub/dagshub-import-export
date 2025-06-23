@@ -1,0 +1,49 @@
+from dataclasses import dataclass
+from pathlib import PurePosixPath
+from urllib.parse import urlparse, urljoin, quote
+
+import dagshub.auth
+from dagshub.common.api import RepoAPI
+
+
+def multi_urljoin(*parts):
+    return urljoin(
+        parts[0] + "/", "/".join(quote(part.strip("/"), safe="/") for part in parts[1:])
+    )
+
+
+@dataclass
+class RepoUrlInfo:
+    hostname: str
+    repo: str
+    repoApi: RepoAPI
+
+
+def parse_repo_url(repo_url) -> RepoUrlInfo:
+    """
+    Extracts the host from a given repository URL.
+
+    Args:
+        repo_url (str): The URL of the repository.
+
+    Returns:
+        str: The host part of the URL.
+    """
+    if not repo_url.startswith("http"):
+        raise ValueError("Repository URL must start with 'http' or 'https'.")
+
+    parsed_url = urlparse(repo_url)
+    path = PurePosixPath(parsed_url.path)
+    if len(path.parts) < 3:
+        raise ValueError(
+            f"Repository URL must be something like 'http(s)://host/user/repo'., got {repo_url}"
+        )
+    hostname = f"{parsed_url.scheme}://{parsed_url.netloc}"
+    hostname = multi_urljoin(hostname, *path.parts[:-2])
+    repo = path.parts[-2] + "/" + path.parts[-1]
+    repoApi = RepoAPI(host=hostname, repo=repo)
+    return RepoUrlInfo(hostname=hostname, repo=repo, repoApi=repoApi)
+
+
+def get_token(host):
+    return dagshub.auth.get_token(host=host)
