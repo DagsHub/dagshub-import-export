@@ -10,6 +10,8 @@ requires-python = ">=3.11.7"
 dependencies = [
     "click>=8.2.1",
     "dagshub",
+    "mlflow==2.22.0",
+    "mlflow-export-import",
     "pydantic>=2.11.7",
     "requests>=2.32.4",
 ]
@@ -20,3 +22,10 @@ dagshub-import-export = "dagshub_import_export:main"
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
+
+[tool.uv.sources]
+dagshub = { path = "../client", editable = true }
+mlflow-export-import = { git = "https://github.com/mlflow/mlflow-export-import" }
+
+[tool.ruff]
+line-length = 120

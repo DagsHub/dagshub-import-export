@@ -1,15 +1,10 @@
 from dataclasses import dataclass
 from pathlib import PurePosixPath
-from urllib.parse import urlparse, urljoin, quote
+from urllib.parse import urlparse
 
 import dagshub.auth
 from dagshub.common.api import RepoAPI
-
-
-def multi_urljoin(*parts):
-    return urljoin(
-        parts[0] + "/", "/".join(quote(part.strip("/"), safe="/") for part in parts[1:])
-    )
+from dagshub.common.util import multi_urljoin
 
 
 @dataclass
@@ -35,9 +30,7 @@ def parse_repo_url(repo_url) -> RepoUrlInfo:
     parsed_url = urlparse(repo_url)
     path = PurePosixPath(parsed_url.path)
     if len(path.parts) < 3:
-        raise ValueError(
-            f"Repository URL must be something like 'http(s)://host/user/repo'., got {repo_url}"
-        )
+        raise ValueError(f"Repository URL must be in the format of 'http(s)://host/user/repo', got {repo_url}")
     hostname = f"{parsed_url.scheme}://{parsed_url.netloc}"
     hostname = multi_urljoin(hostname, *path.parts[:-2])
     repo = path.parts[-2] + "/" + path.parts[-1]
