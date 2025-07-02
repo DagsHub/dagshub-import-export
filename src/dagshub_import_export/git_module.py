@@ -7,9 +7,11 @@ import git
 
 
 def mirror_repo(repo: git.Repo, destination_repo: RepoAPI):
-    # TODO: check that destination is empty
+    # TODO: check that destination is empty, if it's not empty, throw an error, tell the user that they should delete and create a blank repo
+    # TODO: If a repo is a mirror, then don't do anything
     # repo.create_remote("destination", get_git_url(destination_repo, include_token=True))
     # repo.remote("destination").push()
+
     cwd = os.getcwd()
     try:
         os.chdir(repo.working_dir)

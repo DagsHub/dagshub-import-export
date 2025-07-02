@@ -1,3 +1,4 @@
+import logging
 from dataclasses import dataclass
 from pathlib import PurePosixPath
 from urllib.parse import urlparse
@@ -40,3 +41,10 @@ def parse_repo_url(repo_url) -> RepoUrlInfo:
 
 def get_token(host):
     return dagshub.auth.get_token(host=host)
+
+
+def init_logging():
+    logging.basicConfig(level=logging.INFO)
+    # Turn off noisy network-level loggers that clutter up info output
+    logging.getLogger("gql.transport.requests").setLevel(logging.WARNING)
+    logging.getLogger("httpx").setLevel(logging.WARNING)
