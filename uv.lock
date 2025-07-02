@@ -485,7 +485,7 @@ requires-dist = [
     { name = "click", specifier = ">=8.2.1" },
     { name = "dagshub", editable = "../client" },
     { name = "mlflow", specifier = "==2.22.0" },
-    { name = "mlflow-export-import", git = "https://github.com/mlflow/mlflow-export-import" },
+    { name = "mlflow-export-import", git = "ssh://git@github.com/dagshub/mlflow-export-import?rev=dagshub-specific-fixes" },
     { name = "pydantic", specifier = ">=2.11.7" },
     { name = "requests", specifier = ">=2.32.4" },
 ]
@@ -1264,7 +1264,7 @@ wheels = [
 [[package]]
 name = "mlflow-export-import"
 version = "1.2.0"
-source = { git = "https://github.com/mlflow/mlflow-export-import#a572e944ebee82fe9b37c5e7b35541d01c26253b" }
+source = { git = "ssh://git@github.com/dagshub/mlflow-export-import?rev=dagshub-specific-fixes#385a8d30645f09525386d82b5b6c19a01af089c0" }
 dependencies = [
     { name = "databricks-cli" },
     { name = "mlflow-skinny", extra = ["databricks"] },

@@ -24,8 +24,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [tool.uv.sources]
-dagshub = { path = "../client", editable = true }
-mlflow-export-import = { git = "https://github.com/mlflow/mlflow-export-import" }
+mlflow-export-import = { git = "ssh://git@github.com/dagshub/mlflow-export-import", rev = "dagshub-specific-fixes" }
 
 [tool.ruff]
 line-length = 120
