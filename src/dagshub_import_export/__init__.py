@@ -1,7 +1,8 @@
 import logging
+from pathlib import Path
 from tempfile import TemporaryDirectory
 
-from dagshub_import_export.dataengine import reimport_dataengine
+from dagshub_import_export.dataengine import reimport_dataengine_datasources, reimport_dataengine_metadata
 from dagshub_import_export.git_module import clone_repo, mirror_repo
 from dagshub_import_export.mlflow_import.importer import reimport_mlflow
 from dagshub_import_export.rclone import copy_rclone_dvc, copy_rclone_repo_bucket
@@ -46,8 +47,9 @@ def reimport_repo(
 
         if data_engine:
             logger.info("Copying Data Engine data")
-            ds_map = reimport_dataengine(source_repo, destination_repo)
-            print(ds_map)
+            ds_map = reimport_dataengine_datasources(source_repo, destination_repo)
+            reimport_dataengine_metadata(source_repo, destination_repo, ds_map, Path(temp_dir))
+            # print(ds_map)
 
 
 def testing_mlflow():
