@@ -2,6 +2,7 @@ import logging
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
+from dagshub_import_export.checks import can_push_git, run_dataengine_checks
 from dagshub_import_export.dataengine import reimport_dataengine_datasources, reimport_dataengine_metadata
 from dagshub_import_export.git_module import clone_repo, mirror_repo
 from dagshub_import_export.mlflow_import.importer import reimport_mlflow
@@ -30,8 +31,9 @@ def reimport_repo(
         git_repo = clone_repo(source_repo, temp_dir)
 
         if git:
-            logger.info("Mirroring Git repository")
-            mirror_repo(git_repo, destination_repo)
+            if can_push_git(source_repo, destination_repo):
+                logger.info("Mirroring Git repository")
+                mirror_repo(git_repo, destination_repo)
 
         if dvc:
             logger.info("Copying DVC data")
@@ -46,6 +48,7 @@ def reimport_repo(
             reimport_mlflow(source_repo, destination_repo)
 
         if data_engine:
+            run_dataengine_checks(source_repo, destination_repo)
             logger.info("Copying Data Engine data")
             ds_map = reimport_dataengine_datasources(source_repo, destination_repo)
             reimport_dataengine_metadata(source_repo, destination_repo, ds_map, Path(temp_dir))
@@ -64,6 +67,12 @@ def testing_dataengine():
     reimport_repo(source_url, destination_url, git=False, dvc=False, repo_bucket=False, mlflow=False, data_engine=True)
 
 
+def testing_mirror_cloning():
+    source_url = "https://dagshub.com/Dean/COCO_1K"
+    destination_url = "http://localhost:8080/kirill/mlflow_repo_mirror"
+    reimport_repo(source_url, destination_url, git=True, dvc=False, repo_bucket=False, mlflow=False, data_engine=False)
+
+
 def main() -> None:
     # source_url = "https://dagshub.com/KBolashev/coco8-pose"
     source_url = "https://dagshub.com/KBolashev/mlflow_repo"
@@ -75,4 +84,5 @@ if __name__ == "__main__":
     init_logging()
     # main()
     # testing_mlflow()
-    testing_dataengine()
+    # testing_dataengine()
+    testing_mirror_cloning()

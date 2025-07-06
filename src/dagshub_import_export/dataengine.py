@@ -128,6 +128,7 @@ def get_exportable_dataframe(ds: Datasource) -> pd.DataFrame:
         if ann is None:
             return None
         elif isinstance(ann, MetadataAnnotations):
+            # TODO: change URLs
             return ann.to_ls_task()
         elif isinstance(ann, bytes):
             return ann
