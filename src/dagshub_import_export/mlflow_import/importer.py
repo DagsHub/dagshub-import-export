@@ -15,14 +15,14 @@ logger = logging.getLogger(__name__)
 
 def reimport_mlflow(source: RepoAPI, destination: RepoAPI):
     # TODO: use a persistent dir for the import, so we don't have to redownload every time
-    # temp_dir = "coco_reimport"
-    # os.makedirs(temp_dir, exist_ok=True)
-    with TemporaryDirectory() as temp_dir:
-        _export_mlflow(source, temp_dir)
-        # TODO: copy the data to another folder, massage  it to change:
-        # Tags: "dagshub.datasets.dataset_id", "dagshub.datasets.datasource_id"
-        # Artifacts: anything with "dagshub.dataset.json"
-        _import_mlflow(destination, temp_dir)
+    temp_dir = "coco_reimport"
+    os.makedirs(temp_dir, exist_ok=True)
+    # with TemporaryDirectory() as temp_dir:
+    _export_mlflow(source, temp_dir)
+    # TODO: copy the data to another folder, massage it to change:
+    # Tags: "dagshub.datasets.dataset_id", "dagshub.datasets.datasource_id"
+    # Artifacts: anything with "dagshub.dataset.json"
+    _import_mlflow(destination, temp_dir)
     logger.info("Finished reimporting MLflow data")
 
 

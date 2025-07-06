@@ -28,3 +28,8 @@ mlflow-export-import = { git = "ssh://git@github.com/dagshub/mlflow-export-impor
 
 [tool.ruff]
 line-length = 120
+
+[dependency-groups]
+dev = [
+    "pandas-stubs>=2.3.0.250703",
+]

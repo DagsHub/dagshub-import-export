@@ -19,7 +19,7 @@ def reimport_dataengine_datasources(source: RepoAPI, destination: RepoAPI) -> Da
     """
     reimport datasources and datasets
     """
-    logger.info(f"Copying datasources and datasets from {source.repo_url} to {destination.repo_url}")
+    logger.info(f"Copying datasources and datasets from {source.repo_url} to {destination.repo_url} (without metadata)")
     set_dataengine_host(source)
     source_datasources = datasources.get_datasources(source.full_name)
     source_datasets = datasets.get_datasets(source.full_name)
@@ -70,7 +70,9 @@ def _transfer_field_definitions(source: Datasource, destination: Datasource):
             builder = destination.metadata_field(field.name).set_type(
                 metadata_type_lookup_reverse[field.valueType.value]
             )
-            builder._add_tags(field.tags)
+            if field.tags is not None:
+                # noinspection PyProtectedMember
+                builder._add_tags(field.tags)
             builder.apply()
         except Exception as e:
             logger.error(
@@ -81,6 +83,7 @@ def _transfer_field_definitions(source: Datasource, destination: Datasource):
 def reimport_dataengine_metadata(
     source: RepoAPI, destination: RepoAPI, de_mappings: DataengineMappings, storage_path: Path
 ):
+    logger.info(f"Copying Data Engine metadata from {source.repo_url} to {destination.repo_url}")
     set_dataengine_host(source)
     source_datasource_list = datasources.get_datasources(source.full_name)
     source_datasources = {ds.source.id: ds for ds in source_datasource_list}

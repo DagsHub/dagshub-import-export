@@ -43,6 +43,9 @@ def reimport_repo(
             logger.info("Copying repository bucket data")
             copy_rclone_repo_bucket(source_repo, destination_repo)
 
+        if mlflow or data_engine:
+            ds_map = reimport_dataengine_datasources(source_repo, destination_repo)
+
         if mlflow:
             logger.info("Copying MLflow data")
             reimport_mlflow(source_repo, destination_repo)
@@ -50,7 +53,6 @@ def reimport_repo(
         if data_engine:
             run_dataengine_checks(source_repo, destination_repo)
             logger.info("Copying Data Engine data")
-            ds_map = reimport_dataengine_datasources(source_repo, destination_repo)
             reimport_dataengine_metadata(source_repo, destination_repo, ds_map, Path(temp_dir))
             # print(ds_map)
 
@@ -73,6 +75,19 @@ def testing_mirror_cloning():
     reimport_repo(source_url, destination_url, git=True, dvc=False, repo_bucket=False, mlflow=False, data_engine=False)
 
 
+def copy_coco_1k():
+    # Copies only data and repo of COCO 1k, no mlflow or data engine
+    source_url = "https://dagshub.com/Dean/COCO_1K"
+    destination_url = "http://localhost:8080/kirill/COCO_1K_Backup"
+    reimport_repo(source_url, destination_url, git=True, dvc=True, repo_bucket=True, mlflow=False, data_engine=False)
+
+
+def copy_coco_1k_mlflow():
+    source_url = "https://dagshub.com/Dean/COCO_1K"
+    destination_url = "http://localhost:8080/kirill/COCO_1K_Backup"
+    reimport_repo(source_url, destination_url, git=False, dvc=False, repo_bucket=False, mlflow=True, data_engine=False)
+
+
 def main() -> None:
     # source_url = "https://dagshub.com/KBolashev/coco8-pose"
     source_url = "https://dagshub.com/KBolashev/mlflow_repo"
@@ -82,7 +97,9 @@ def main() -> None:
 
 if __name__ == "__main__":
     init_logging()
+    # copy_coco_1k()
+    copy_coco_1k_mlflow()
     # main()
     # testing_mlflow()
     # testing_dataengine()
-    testing_mirror_cloning()
+    # testing_mirror_cloning()
