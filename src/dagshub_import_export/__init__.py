@@ -48,7 +48,7 @@ def reimport_repo(
 
         if mlflow:
             logger.info("Copying MLflow data")
-            reimport_mlflow(source_repo, destination_repo)
+            reimport_mlflow(source_repo, destination_repo, ds_map)
 
         if data_engine:
             run_dataengine_checks(source_repo, destination_repo)
