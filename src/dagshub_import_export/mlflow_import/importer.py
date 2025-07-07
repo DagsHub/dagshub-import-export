@@ -2,6 +2,8 @@ import datetime
 import json
 import logging
 import os
+import shutil
+from tempfile import TemporaryDirectory
 
 import mlflow
 from dagshub.common.api import RepoAPI, UserAPI
@@ -19,23 +21,15 @@ logger = logging.getLogger(__name__)
 
 
 def reimport_mlflow(source: RepoAPI, destination: RepoAPI, ds_map: DataengineMappings):
-    # TODO: use a persistent dir for the import, so we don't have to redownload every time
-    temp_dir = "coco_reimport"
-    os.makedirs(temp_dir, exist_ok=True)
-    # with TemporaryDirectory() as temp_dir:
-
-    # _export_mlflow(source, temp_dir)
-    # TODO: copy the data to another folder, massage it to change:
-    # Tags: "dagshub.datasets.dataset_id", "dagshub.datasets.datasource_id"
-    # Artifacts: anything with "dagshub.dataset.json"
-    processed_mlflow_dir = None
-    try:
-        processed_mlflow_dir = change_dataengine_ids(source, destination, temp_dir, ds_map)
-        # _import_mlflow(destination, processed_mlflow_dir)
-    finally:
-        pass
-        # if processed_mlflow_dir is not None:
-        #     shutil.rmtree(processed_mlflow_dir)
+    with TemporaryDirectory() as temp_dir:
+        _export_mlflow(source, temp_dir)
+        processed_mlflow_dir = None
+        try:
+            processed_mlflow_dir = change_dataengine_ids(source, destination, temp_dir, ds_map)
+            _import_mlflow(destination, processed_mlflow_dir)
+        finally:
+            if processed_mlflow_dir is not None:
+                shutil.rmtree(processed_mlflow_dir)
     logger.info("Finished reimporting MLflow data")
 
 
