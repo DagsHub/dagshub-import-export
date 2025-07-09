@@ -11,8 +11,14 @@ Repository requirements:
 
 ## Installation
 
+With uv (recommended):
 ```shell
-pip install git+https:///github.com/dagshub/dagshub-import-export
+uv tool install git+https://github.com/dagshub/dagshub-import-export
+```
+
+With regular pip (recommended to create a virtual environment first):
+```shell
+pip install git+https://github.com/dagshub/dagshub-import-export
 ```
 
 ## Usage
