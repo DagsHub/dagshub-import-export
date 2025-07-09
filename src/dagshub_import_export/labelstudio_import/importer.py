@@ -1,15 +1,17 @@
 import logging
-from typing import Optional
+from typing import Optional, TYPE_CHECKING
 
 from dagshub import get_label_studio_client
 from dagshub.common.api import RepoAPI
-from label_studio_sdk import Project, LabelStudio
 
 from dagshub_import_export.dataengine import get_datasource
 from dagshub_import_export.models.dataengine_mappings import DataengineMappings
 from dagshub_import_export.models.import_config import ImportConfig
 
 logger = logging.getLogger(__name__)
+
+if TYPE_CHECKING:
+    from label_studio_sdk import Project, LabelStudio
 
 
 def reimport_labelstudio(import_config: ImportConfig, ds_map: DataengineMappings):
@@ -27,7 +29,7 @@ def reimport_labelstudio(import_config: ImportConfig, ds_map: DataengineMappings
     print(source_ls)
 
 
-def import_ls_project(ls_client: LabelStudio, project: Project, destination: RepoAPI, ds_map: DataengineMappings):
+def import_ls_project(ls_client: "LabelStudio", project: "Project", destination: RepoAPI, ds_map: DataengineMappings):
     logger.info(f"Importing Label Studio project {project.title} to {destination.repo_url}")
     ds_id = get_project_associated_datasource(ls_client, project)
 
@@ -53,7 +55,7 @@ def import_ls_project(ls_client: LabelStudio, project: Project, destination: Rep
     # target_ds.annotate()
 
 
-def get_project_associated_datasource(ls_client: LabelStudio, project: Project) -> Optional[int]:
+def get_project_associated_datasource(ls_client: "LabelStudio", project: "Project") -> Optional[int]:
     tasks = ls_client.tasks.list(project=project.id, page_size=1)
     if not tasks.items:
         logger.info(f"Project {project.id} has no tasks, can't import it")
