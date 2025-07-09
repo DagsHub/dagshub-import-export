@@ -3,9 +3,11 @@ import json
 import logging
 import os
 import shutil
+from typing import TYPE_CHECKING
 
 import mlflow
 from dagshub.common.api import RepoAPI, UserAPI
+from dagshub.common.util import lazy_load
 from dagshub.data_engine.model.datasource import Datasource
 
 from dagshub_import_export.dataengine import set_dataengine_host, get_dataset, get_datasource
@@ -14,9 +16,11 @@ from dagshub_import_export.models.import_config import ImportConfig
 from dagshub_import_export.util import get_token
 from mlflow.tracking import MlflowClient
 
-from dagshub_import_export.vendor.mlflow_export_import.bulk.export_all import export_all
-from dagshub_import_export.vendor.mlflow_export_import.bulk.import_experiments import import_experiments
-from dagshub_import_export.vendor.mlflow_export_import.bulk.import_models import import_models
+
+if TYPE_CHECKING:
+    import dagshub_import_export.vendor.mlflow_export_import.bulk as mlflow_export_import
+else:
+    mlflow_export_import = lazy_load("dagshub_import_export.vendor.mlflow_export_import.bulk")
 
 logger = logging.getLogger(__name__)
 
@@ -40,7 +44,7 @@ def _export_mlflow(repo: RepoAPI, dest_dir: str):
     _set_mlflow_auth(repo)
     client = _get_mlflow_client(repo)
 
-    export_all(dest_dir, mlflow_client=client)
+    mlflow_export_import.export_all(dest_dir, mlflow_client=client)
 
 
 def change_dataengine_ids(source: RepoAPI, destination: RepoAPI, source_dir: str, ds_map: DataengineMappings) -> str:
@@ -143,8 +147,8 @@ def _import_mlflow(repo: RepoAPI, source_dir: str):
 
     # TODO: check if mlflow is empty. If it's not, prompt user to remove everything (rerunning will create duplicates)
 
-    import_experiments(os.path.join(source_dir, "experiments"), mlflow_client=client)
-    import_models(source_dir, mlflow_client=client, delete_model=True)
+    mlflow_export_import.import_experiments(os.path.join(source_dir, "experiments"), mlflow_client=client)
+    mlflow_export_import.import_models(source_dir, mlflow_client=client, delete_model=True)
 
 
 def _get_mlflow_client(repo: RepoAPI):
