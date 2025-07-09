@@ -9,9 +9,9 @@ from tempfile import TemporaryDirectory
 
 from dagshub.common.api import RepoAPI
 
-from dagshub_import_export.checks import can_push_git, run_dataengine_checks
+from dagshub_import_export.checks import run_dataengine_checks
 from dagshub_import_export.dataengine import reimport_dataengine_datasources, reimport_dataengine_metadata
-from dagshub_import_export.git_module import clone_repo, mirror_repo
+from dagshub_import_export.git_module import reimport_git_repo
 from dagshub_import_export.labelstudio_import.importer import reimport_labelstudio
 from dagshub_import_export.mlflow_import.importer import reimport_mlflow
 from dagshub_import_export.models.import_config import ImportConfig
@@ -34,111 +34,38 @@ class DagshubRepoParamType(click.ParamType):
 DAGSHUB_REPO = DagshubRepoParamType()
 
 
-def reimport_repo(
-    source_url: str,
-    destination_url: str,
-    # TODO: turn these on by default
-    git=False,
-    dvc=False,
-    repo_bucket=False,
-    mlflow=False,
-    metadata=False,
-    datasources=False,
-    labelstudio=False,
-):
-    # TODO: add prerequisite checks for CLI commands: git, dvc, rclone
-    source_repo = parse_repo_url(source_url)
-    destination_repo = parse_repo_url(destination_url)
+def reimport_repo(import_config: ImportConfig):
+    source, destination = import_config.source_and_destination
+    logger.info(f"Importing repository from {source.repo_url} to {destination.repo_url}")
 
-    logger.info("Importing repository from %s to %s", source_url, destination_url)
+    if import_config.git:
+        reimport_git_repo(import_config)
 
-    datasources = datasources or (mlflow or metadata or labelstudio)
+    if import_config.dvc:
+        logger.info("Copying DVC data")
+        copy_rclone_dvc(import_config)
 
-    with TemporaryDirectory() as temp_dir:
-        git_repo = clone_repo(source_repo, temp_dir)
+    if import_config.repo_bucket:
+        logger.info("Copying repository bucket data")
+        copy_rclone_repo_bucket(import_config)
 
-        if git:
-            if can_push_git(source_repo, destination_repo):
-                logger.info("Mirroring Git repository")
-                mirror_repo(git_repo, destination_repo)
+    if import_config.datasources:
+        ds_map = reimport_dataengine_datasources(import_config)
 
-        if dvc:
-            logger.info("Copying DVC data")
-            copy_rclone_dvc(source_repo, destination_repo)
-
-        if repo_bucket:
-            logger.info("Copying repository bucket data")
-            copy_rclone_repo_bucket(source_repo, destination_repo)
-
-        if datasources:
-            ds_map = reimport_dataengine_datasources(source_repo, destination_repo)
-
-        if mlflow:
+        if import_config.mlflow:
             logger.info("Copying MLflow data")
-            reimport_mlflow(source_repo, destination_repo, ds_map)
+            reimport_mlflow(import_config, ds_map)
 
-        if metadata:
-            run_dataengine_checks(source_repo, destination_repo)
+        if import_config.metadata:
+            run_dataengine_checks(import_config)
             logger.info("Copying Data Engine data")
-            reimport_dataengine_metadata(source_repo, destination_repo, ds_map, Path(temp_dir))
+            reimport_dataengine_metadata(import_config, ds_map)
 
-        if labelstudio:
+        if import_config.labelstudio:
             logger.info("Copying Label Studio data")
-            reimport_labelstudio(source_repo, destination_repo, ds_map)
+            reimport_labelstudio(import_config, ds_map)
 
-
-def testing_mlflow():
-    source_url = "https://dagshub.com/Dean/COCO_1K"
-    destination_url = "http://localhost:8080/kirill/COCO_1K_Backup"
-    reimport_repo(source_url, destination_url, git=False, dvc=False, repo_bucket=False, mlflow=True, metadata=False)
-
-
-def testing_dataengine():
-    source_url = "https://dagshub.com/Dean/COCO_1K"
-    destination_url = "http://localhost:8080/kirill/COCO_1K_Backup"
-    reimport_repo(source_url, destination_url, git=False, dvc=False, repo_bucket=False, mlflow=False, metadata=True)
-
-
-def testing_mirror_cloning():
-    source_url = "https://dagshub.com/Dean/COCO_1K"
-    destination_url = "http://localhost:8080/kirill/mlflow_repo_mirror"
-    reimport_repo(source_url, destination_url, git=True, dvc=False, repo_bucket=False, mlflow=False, metadata=False)
-
-
-def copy_coco_1k():
-    # Copies only data and repo of COCO 1k, no mlflow or data engine
-    source_url = "https://dagshub.com/Dean/COCO_1K"
-    destination_url = "http://localhost:8080/kirill/COCO_1K_Backup"
-    reimport_repo(source_url, destination_url, git=True, dvc=True, repo_bucket=True, mlflow=False, metadata=False)
-
-
-def copy_coco_1k_mlflow():
-    source_url = "https://dagshub.com/Dean/COCO_1K"
-    destination_url = "http://localhost:8080/kirill/COCO_1K_Backup"
-    reimport_repo(source_url, destination_url, git=False, dvc=False, repo_bucket=False, mlflow=True, metadata=False)
-
-
-def copy_coco_1k_test():
-    source_url = "https://dagshub.com/Dean/COCO_1K"
-    destination_url = "https://test.dagshub.com/kirill/COCO_1K_Backup"
-    reimport_repo(source_url, destination_url, git=True, dvc=True, repo_bucket=True, mlflow=False, metadata=False)
-
-
-def copy_coco_1k_test_labelstudio():
-    source_url = "https://dagshub.com/Dean/COCO_1K"
-    destination_url = "https://test.dagshub.com/kirill/COCO_1K_Backup"
-    reimport_repo(
-        source_url,
-        destination_url,
-        labelstudio=True,
-    )
-
-
-# def main() -> None:
-#     # source_url = "https://dagshub.com/KBolashev/coco8-pose"
-#     source_url = "https://dagshub.com/KBolashev/mlflow_repo"
-#     destination_url = "http://localhost:8080/kirill/coco8-pose-backup"
-#     reimport_repo(source_url, destination_url, git=False, dvc=False, repo_bucket=True, mlflow=False, metadata=False)
+    logger.info("DONE IMPORTING!")
 
 
 def main(
@@ -173,20 +100,10 @@ def main(
             directory=directory,
         )
         logger.info(import_config)
+        reimport_repo(import_config)
     finally:
         if tmp_dir is not None:
             tmp_dir.cleanup()
-
-    #
-    # reimport_repo(
-    #     source_repo.repo_url,
-    #     destination_repo.repo_url,
-    #     git=True,
-    #     dvc=True,
-    #     repo_bucket=True,
-    #     mlflow=False,
-    #     metadata=False,
-    # )
 
 
 @click.command()

@@ -1,6 +1,7 @@
 import logging
 from dataclasses import dataclass
 from pathlib import Path
+from typing import Tuple
 
 from dagshub.common.api import RepoAPI
 
@@ -91,3 +92,7 @@ class ImportConfig:
             f"\tLabel Studio: {self.labelstudio}\n"
             f"\nStorage directory: {self.directory}\n"
         )
+
+    @property
+    def source_and_destination(self) -> Tuple[RepoAPI, RepoAPI]:
+        return self.source, self.destination

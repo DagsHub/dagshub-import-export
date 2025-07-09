@@ -5,6 +5,8 @@ from build.lib.dagshub.common.api.responses import StorageAPIEntry
 from dagshub.common.api import RepoAPI
 from dagshub.common.api.repo import BranchNotFoundError
 
+from dagshub_import_export.models.import_config import ImportConfig
+
 logger = logging.getLogger(__name__)
 
 
@@ -46,8 +48,8 @@ def can_push_git(source: RepoAPI, destination: RepoAPI) -> bool:
         )
 
 
-def run_dataengine_checks(source: RepoAPI, destination: RepoAPI):
-    check_integration_parity(source, destination)
+def run_dataengine_checks(import_config: ImportConfig):
+    check_integration_parity(import_config.source, import_config.destination)
 
 
 def check_integration_parity(source: RepoAPI, destination: RepoAPI):

@@ -7,14 +7,16 @@ from label_studio_sdk import Project, LabelStudio
 
 from dagshub_import_export.dataengine import get_datasource
 from dagshub_import_export.models.dataengine_mappings import DataengineMappings
-
+from dagshub_import_export.models.import_config import ImportConfig
 
 logger = logging.getLogger(__name__)
 
 
-def reimport_labelstudio(source: RepoAPI, destination: RepoAPI, ds_map: DataengineMappings):
+def reimport_labelstudio(import_config: ImportConfig, ds_map: DataengineMappings):
+    source, destination = import_config.source_and_destination
     # FIXME: remove once done
-    raise NotImplementedError
+    logger.warning("Not implemented yet, skipping Label Studio import")
+    return
 
     source_ls = _get_ls_client(source)
     projects = source_ls.projects.list()

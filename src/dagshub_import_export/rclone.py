@@ -2,7 +2,6 @@ import configparser
 import logging
 import subprocess
 from pathlib import Path
-from tempfile import TemporaryDirectory
 from typing import Callable
 
 from dagshub.auth import get_token
@@ -10,37 +9,42 @@ from dagshub.auth.token_auth import DagshubAuthenticator
 from dagshub.common.api import RepoAPI
 from dagshub.common.util import multi_urljoin
 
+from dagshub_import_export.models.import_config import ImportConfig
+
 logger = logging.getLogger(__name__)
 
 
-def copy_rclone_repo_bucket(source: RepoAPI, destination: RepoAPI):
-    copy_rclone(source, destination, _repo_bucket_endpoint, _repo_bucket_name)
+def copy_rclone_repo_bucket(import_config: ImportConfig):
+    source, destination = import_config.source_and_destination
+    config_dir = import_config.directory / "rclone_bucket"
+    copy_rclone(source, destination, _repo_bucket_endpoint, _repo_bucket_name, config_dir)
 
 
-def copy_rclone_dvc(source: RepoAPI, destination: RepoAPI):
-    copy_rclone(source, destination, _dvc_bucket_endpoint, _dvc_bucket_name)
+def copy_rclone_dvc(import_config: ImportConfig):
+    source, destination = import_config.source_and_destination
+    config_dir = import_config.directory / "rclone_dvc"
+    copy_rclone(source, destination, _dvc_bucket_endpoint, _dvc_bucket_name, config_dir)
 
 
-def copy_rclone(source: RepoAPI, destination: RepoAPI, endpoint_fn: Callable, bucket_fn: Callable):
-    with TemporaryDirectory() as temp_dir:
-        rclone_cfg_path = generate_rclone_config(source, destination, Path(temp_dir), endpoint_fn)
+def copy_rclone(source: RepoAPI, destination: RepoAPI, endpoint_fn: Callable, bucket_fn: Callable, config_dir: Path):
+    rclone_cfg_path = generate_rclone_config(source, destination, config_dir, endpoint_fn)
 
-        source_address = f"source:{bucket_fn(source)}"
-        destination_address = f"destination:{bucket_fn(destination)}"
+    source_address = f"source:{bucket_fn(source)}"
+    destination_address = f"destination:{bucket_fn(destination)}"
 
-        args = [
-            "rclone",
-            "copy",
-            "--config",
-            str(rclone_cfg_path),
-            source_address,
-            destination_address,
-            "--no-update-modtime",
-            "--progress",
-        ]
+    args = [
+        "rclone",
+        "copy",
+        "--config",
+        str(rclone_cfg_path),
+        source_address,
+        destination_address,
+        "--no-update-modtime",
+        "--progress",
+    ]
 
-        logger.info(f"Running rclone command: {' '.join(args)}")
-        subprocess.run(args)
+    logger.info(f"Running rclone command: {' '.join(args)}")
+    subprocess.run(args)
 
 
 def generate_rclone_config(source: RepoAPI, destination: RepoAPI, cfg_dir: Path, endpoint_fn: Callable) -> Path:

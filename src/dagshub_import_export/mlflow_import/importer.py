@@ -3,7 +3,6 @@ import json
 import logging
 import os
 import shutil
-from tempfile import TemporaryDirectory
 
 import mlflow
 from dagshub.common.api import RepoAPI, UserAPI
@@ -11,6 +10,7 @@ from dagshub.data_engine.model.datasource import Datasource
 
 from dagshub_import_export.dataengine import set_dataengine_host, get_dataset, get_datasource
 from dagshub_import_export.models.dataengine_mappings import DataengineMappings
+from dagshub_import_export.models.import_config import ImportConfig
 from dagshub_import_export.util import get_token
 from mlflow.tracking import MlflowClient
 
@@ -21,16 +21,17 @@ from dagshub_import_export.vendor.mlflow_export_import.bulk.import_models import
 logger = logging.getLogger(__name__)
 
 
-def reimport_mlflow(source: RepoAPI, destination: RepoAPI, ds_map: DataengineMappings):
-    with TemporaryDirectory() as temp_dir:
-        _export_mlflow(source, temp_dir)
-        processed_mlflow_dir = None
-        try:
-            processed_mlflow_dir = change_dataengine_ids(source, destination, temp_dir, ds_map)
-            _import_mlflow(destination, processed_mlflow_dir)
-        finally:
-            if processed_mlflow_dir is not None:
-                shutil.rmtree(processed_mlflow_dir)
+def reimport_mlflow(import_config: ImportConfig, ds_map: DataengineMappings):
+    source, destination = import_config.source_and_destination
+    mlflow_dir = str(import_config.directory / "mlflow")  # Use strings here because of mlflow's export/import functions
+    _export_mlflow(source, mlflow_dir)
+    processed_mlflow_dir = None
+    try:
+        processed_mlflow_dir = change_dataengine_ids(source, destination, mlflow_dir, ds_map)
+        _import_mlflow(destination, processed_mlflow_dir)
+    finally:
+        if processed_mlflow_dir is not None:
+            shutil.rmtree(processed_mlflow_dir)
     logger.info("Finished reimporting MLflow data")
 
 
@@ -129,6 +130,7 @@ def _process_datasource_json(
 
     dest_ds._query = source_ds._query
     # set the as of to the current time, because we don't have historical time
+    # noinspection PyProtectedMember
     dest_ds._query.as_of = None
     # noinspection PyProtectedMember
     serialized = dest_ds._to_dict(datetime.datetime.now())
