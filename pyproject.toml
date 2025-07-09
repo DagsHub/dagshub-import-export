@@ -7,9 +7,9 @@ license = "MIT"
 authors = [
     { name = "KBolashev", email = "kirill@dagshub.com" }
 ]
-requires-python = ">=3.11.7"
+requires-python = ">=3.10"
 dependencies = [
-    "click>=8.2.1",
+    "click>=7.0",
     "dagshub",
     "label-studio-sdk~=1.0",
     "pandas>=2.3.0",
