@@ -22,7 +22,7 @@ The 'custom rewriters module' expects two methods:
 import os
 import shutil
 import click
-from mlflow_export_import.common import io_utils
+from dagshub_import_export.vendor.mlflow_export_import.common import io_utils
 
 
 def _load_func(func_name, module_dct, module_path):

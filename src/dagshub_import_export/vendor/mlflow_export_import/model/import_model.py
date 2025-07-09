@@ -8,7 +8,7 @@ import click
 import mlflow
 from mlflow.exceptions import RestException
 
-from mlflow_export_import.common.click_options import (
+from dagshub_import_export.vendor.mlflow_export_import.common.click_options import (
     opt_input_dir,
     opt_model,
     opt_experiment_name,
@@ -17,16 +17,16 @@ from mlflow_export_import.common.click_options import (
     opt_import_source_tags,
     opt_verbose
 )
-from mlflow_export_import.common import utils, io_utils, model_utils
-from mlflow_export_import.common import filesystem as _fs
-from mlflow_export_import.common.mlflow_utils import MlflowTrackingUriTweak
-from mlflow_export_import.common.source_tags import set_source_tags_for_field, fmt_timestamps
-from mlflow_export_import.common import MlflowExportImportException
-from mlflow_export_import.client.client_utils import create_mlflow_client, create_dbx_client
-from mlflow_export_import.run.import_run import import_run
-from mlflow_export_import.bulk import rename_utils
+from dagshub_import_export.vendor.mlflow_export_import.common import utils, io_utils, model_utils
+from dagshub_import_export.vendor.mlflow_export_import.common import filesystem as _fs
+from dagshub_import_export.vendor.mlflow_export_import.common.mlflow_utils import MlflowTrackingUriTweak
+from dagshub_import_export.vendor.mlflow_export_import.common.source_tags import set_source_tags_for_field, fmt_timestamps
+from dagshub_import_export.vendor.mlflow_export_import.common import MlflowExportImportException
+from dagshub_import_export.vendor.mlflow_export_import.client.client_utils import create_mlflow_client, create_dbx_client
+from dagshub_import_export.vendor.mlflow_export_import.run.import_run import import_run
+from dagshub_import_export.vendor.mlflow_export_import.bulk import rename_utils
 
-from mlflow_export_import.model_version.import_model_version import _import_model_version
+from dagshub_import_export.vendor.mlflow_export_import.model_version.import_model_version import _import_model_version
 
 
 _logger = utils.getLogger(__name__)

@@ -3,7 +3,7 @@ import pandas as pd
 from tabulate import tabulate
 
 def getLogger(name):
-    from mlflow_export_import.common import logging_utils
+    from dagshub_import_export.vendor.mlflow_export_import.common import logging_utils
     return logging_utils.get_logger(name)
 
 _logger = getLogger(__name__)
@@ -16,8 +16,8 @@ def calling_databricks(dbx_client=None):
     Are we importing into Databricks?
     Check by making call to Databricks-specific API endpoint and check for 400 status code.
     """
-    from mlflow_export_import.client.http_client import DatabricksHttpClient
-    from mlflow_export_import.common import MlflowExportImportException
+    from dagshub_import_export.vendor.mlflow_export_import.client.http_client import DatabricksHttpClient
+    from dagshub_import_export.vendor.mlflow_export_import.common import MlflowExportImportException
 
     global _calling_databricks
     if _calling_databricks is None:

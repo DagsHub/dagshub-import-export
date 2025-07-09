@@ -8,9 +8,9 @@ WIP.
 import os
 import shutil
 import click
-from mlflow_export_import.common.click_options import opt_input_dir, opt_output_dir
-from mlflow_export_import.common import io_utils
-from mlflow_export_import.common.timestamp_utils import ts_now_fmt_local
+from dagshub_import_export.vendor.mlflow_export_import.common.click_options import opt_input_dir, opt_output_dir
+from dagshub_import_export.vendor.mlflow_export_import.common import io_utils
+from dagshub_import_export.vendor.mlflow_export_import.common.timestamp_utils import ts_now_fmt_local
 
 
 def do_main(input_dir, output_dir, src_model_name, dst_model_name, dst_experiment_name):

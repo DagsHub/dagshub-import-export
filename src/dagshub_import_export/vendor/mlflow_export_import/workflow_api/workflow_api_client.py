@@ -5,8 +5,8 @@ import sys
 import time
 import logging
 from databricks_cli.sdk import service
-from mlflow_export_import.common import MlflowExportImportException
-from mlflow_export_import.client import databricks_utils
+from dagshub_import_export.vendor.mlflow_export_import.common import MlflowExportImportException
+from dagshub_import_export.vendor.mlflow_export_import.client import databricks_utils
 
 logging.info(f"Python version: {sys.version}")
 

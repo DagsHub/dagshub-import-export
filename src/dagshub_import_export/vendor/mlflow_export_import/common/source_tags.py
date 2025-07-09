@@ -15,7 +15,7 @@ class ExportTags:
 
 
 def fmt_timestamps(tag, dct, tags):
-    from mlflow_export_import.common import timestamp_utils
+    from dagshub_import_export.vendor.mlflow_export_import.common import timestamp_utils
     ts = dct[tag]
     tags[f"{ExportTags.PREFIX_FIELD}.{tag}"] = str(ts)
     tags[f"{ExportTags.PREFIX_FIELD}._{tag}"] = timestamp_utils.fmt_ts_millis(ts, True)

@@ -6,12 +6,12 @@ import time
 import mlflow
 from mlflow.exceptions import RestException
 
-from mlflow_export_import.common.iterators import SearchModelVersionsIterator
-from mlflow_export_import.common.timestamp_utils import fmt_ts_millis, adjust_timestamps
-from mlflow_export_import.common import utils
-from mlflow_export_import.common import filesystem as _filesystem
-from mlflow_export_import.common import ws_permissions_utils, uc_permissions_utils
-from mlflow_export_import.client.client_utils import create_http_client, create_dbx_client
+from dagshub_import_export.vendor.mlflow_export_import.common.iterators import SearchModelVersionsIterator
+from dagshub_import_export.vendor.mlflow_export_import.common.timestamp_utils import fmt_ts_millis, adjust_timestamps
+from dagshub_import_export.vendor.mlflow_export_import.common import utils
+from dagshub_import_export.vendor.mlflow_export_import.common import filesystem as _filesystem
+from dagshub_import_export.vendor.mlflow_export_import.common import ws_permissions_utils, uc_permissions_utils
+from dagshub_import_export.vendor.mlflow_export_import.client.client_utils import create_http_client, create_dbx_client
 
 _logger = utils.getLogger(__name__)
 
@@ -156,7 +156,7 @@ def model_version_to_dict(version):
 
 
 def dump_model_version(version, title=None):
-    from mlflow_export_import.common import dump_utils
+    from dagshub_import_export.vendor.mlflow_export_import.common import dump_utils
     dct = model_version_to_dict(version)
     dct = model_version_to_dict(version)
     adjust_timestamps(dct, ["creation_timestamp", "last_updated_timestamp"])

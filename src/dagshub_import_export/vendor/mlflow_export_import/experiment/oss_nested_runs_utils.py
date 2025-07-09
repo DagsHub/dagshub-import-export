@@ -1,4 +1,4 @@
-from mlflow_export_import.common.iterators import SearchRunsIterator
+from dagshub_import_export.vendor.mlflow_export_import.common.iterators import SearchRunsIterator
 
 
 def get_nested_runs(client, runs, parent_runs=None):

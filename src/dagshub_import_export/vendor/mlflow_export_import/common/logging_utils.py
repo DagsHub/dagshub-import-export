@@ -43,7 +43,7 @@ def _load_default_log_config(output_path=None, log_format=None):
 
 
 def _create_default_log_config(output_path=None, log_format=None):
-    from mlflow_export_import.common.default_logging_config import config
+    from dagshub_import_export.vendor.mlflow_export_import.common.default_logging_config import config
     cfg = config.copy()
     cfg["disable_existing_loggers"] = False
     if log_format:

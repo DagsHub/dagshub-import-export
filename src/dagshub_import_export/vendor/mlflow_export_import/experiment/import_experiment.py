@@ -5,7 +5,7 @@ Exports an experiment to a directory.
 import os
 import click
 
-from mlflow_export_import.common.click_options import (
+from dagshub_import_export.vendor.mlflow_export_import.common.click_options import (
     opt_experiment_name,
     opt_input_dir,
     opt_import_source_tags,
@@ -13,15 +13,15 @@ from mlflow_export_import.common.click_options import (
     opt_use_src_user_id,
     opt_dst_notebook_dir
 )
-from mlflow_export_import.client.client_utils import create_mlflow_client, create_dbx_client
-from mlflow_export_import.common import utils, mlflow_utils, io_utils
-from mlflow_export_import.common import ws_permissions_utils
-from mlflow_export_import.common.source_tags import (
+from dagshub_import_export.vendor.mlflow_export_import.client.client_utils import create_mlflow_client, create_dbx_client
+from dagshub_import_export.vendor.mlflow_export_import.common import utils, mlflow_utils, io_utils
+from dagshub_import_export.vendor.mlflow_export_import.common import ws_permissions_utils
+from dagshub_import_export.vendor.mlflow_export_import.common.source_tags import (
     set_source_tags_for_field,
     mk_source_tags_mlflow_tag,
     fmt_timestamps
 )
-from mlflow_export_import.run.import_run import import_run
+from dagshub_import_export.vendor.mlflow_export_import.run.import_run import import_run
 
 _logger = utils.getLogger(__name__)
 

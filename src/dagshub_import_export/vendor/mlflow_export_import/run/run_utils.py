@@ -1,8 +1,8 @@
 
 import os
 import tempfile
-from mlflow_export_import.common import mlflow_utils, io_utils
-from mlflow_export_import.common.find_artifacts import find_run_model_names
+from dagshub_import_export.vendor.mlflow_export_import.common import mlflow_utils, io_utils
+from dagshub_import_export.vendor.mlflow_export_import.common.find_artifacts import find_run_model_names
 
 def get_model_name(artifact_path):
     idx = artifact_path.find("artifacts")

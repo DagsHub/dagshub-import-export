@@ -3,9 +3,9 @@ import mlflow
 from mlflow.utils.mlflow_tags import MLFLOW_RUN_NOTE
 from mlflow.exceptions import RestException
 
-from mlflow_export_import.common import MlflowExportImportException
-from mlflow_export_import.common.iterators import SearchModelVersionsIterator
-from mlflow_export_import.common import utils
+from dagshub_import_export.vendor.mlflow_export_import.common import MlflowExportImportException
+from dagshub_import_export.vendor.mlflow_export_import.common.iterators import SearchModelVersionsIterator
+from dagshub_import_export.vendor.mlflow_export_import.common import utils
 
 _logger = utils.getLogger(__name__)
 

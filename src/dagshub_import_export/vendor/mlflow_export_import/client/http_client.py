@@ -3,7 +3,7 @@ import os
 import json
 import requests
 import click
-from mlflow_export_import.common import MlflowExportImportException
+from dagshub_import_export.vendor.mlflow_export_import.common import MlflowExportImportException
 from . import USER_AGENT
 from . import mlflow_auth_utils
 from . import databricks_cli_utils

@@ -10,17 +10,17 @@ from mlflow.entities.lifecycle_stage import LifecycleStage
 from mlflow.entities import RunStatus
 from mlflow.utils.mlflow_tags import MLFLOW_PARENT_RUN_ID
 
-from mlflow_export_import.common.click_options import (
+from dagshub_import_export.vendor.mlflow_export_import.common.click_options import (
     opt_input_dir,
     opt_import_source_tags,
     opt_experiment_name,
     opt_use_src_user_id,
     opt_dst_notebook_dir
 )
-from mlflow_export_import.common import utils, mlflow_utils, io_utils
-from mlflow_export_import.common import filesystem as _fs
-from mlflow_export_import.common import MlflowExportImportException
-from mlflow_export_import.client.client_utils import create_mlflow_client, create_dbx_client, create_http_client
+from dagshub_import_export.vendor.mlflow_export_import.common import utils, mlflow_utils, io_utils
+from dagshub_import_export.vendor.mlflow_export_import.common import filesystem as _fs
+from dagshub_import_export.vendor.mlflow_export_import.common import MlflowExportImportException
+from dagshub_import_export.vendor.mlflow_export_import.client.client_utils import create_mlflow_client, create_dbx_client, create_http_client
 from . import run_data_importer
 from . import run_utils
 

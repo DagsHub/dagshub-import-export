@@ -8,7 +8,7 @@ from dataclasses import dataclass
 import click
 
 import mlflow
-from mlflow_export_import.common.click_options import (
+from dagshub_import_export.vendor.mlflow_export_import.common.click_options import (
     opt_input_dir, 
     opt_import_permissions,
     opt_import_source_tags,
@@ -16,9 +16,9 @@ from mlflow_export_import.common.click_options import (
     opt_experiment_rename_file,
     opt_use_threads
 )
-from mlflow_export_import.common import utils, io_utils
-from mlflow_export_import.experiment.import_experiment import import_experiment
-from mlflow_export_import.bulk import rename_utils
+from dagshub_import_export.vendor.mlflow_export_import.common import utils, io_utils
+from dagshub_import_export.vendor.mlflow_export_import.experiment.import_experiment import import_experiment
+from dagshub_import_export.vendor.mlflow_export_import.bulk import rename_utils
 
 _logger = utils.getLogger(__name__)
 

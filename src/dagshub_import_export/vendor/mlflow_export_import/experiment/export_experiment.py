@@ -5,7 +5,7 @@ Exports an experiment to a directory.
 import os
 import click
 
-from mlflow_export_import.common.click_options import (
+from dagshub_import_export.vendor.mlflow_export_import.common.click_options import (
     opt_experiment,
     opt_output_dir,
     opt_run_ids,
@@ -15,12 +15,12 @@ from mlflow_export_import.common.click_options import (
     opt_export_deleted_runs,
     opt_check_nested_runs
 )
-from mlflow_export_import.common.iterators import SearchRunsIterator
-from mlflow_export_import.common import utils, io_utils, mlflow_utils
-from mlflow_export_import.common import ws_permissions_utils
-from mlflow_export_import.common.timestamp_utils import fmt_ts_millis, utc_str_to_millis
-from mlflow_export_import.client.client_utils import create_mlflow_client, create_dbx_client
-from mlflow_export_import.run.export_run import export_run
+from dagshub_import_export.vendor.mlflow_export_import.common.iterators import SearchRunsIterator
+from dagshub_import_export.vendor.mlflow_export_import.common import utils, io_utils, mlflow_utils
+from dagshub_import_export.vendor.mlflow_export_import.common import ws_permissions_utils
+from dagshub_import_export.vendor.mlflow_export_import.common.timestamp_utils import fmt_ts_millis, utc_str_to_millis
+from dagshub_import_export.vendor.mlflow_export_import.client.client_utils import create_mlflow_client, create_dbx_client
+from dagshub_import_export.vendor.mlflow_export_import.run.export_run import export_run
 from . import nested_runs_utils
 
 _logger = utils.getLogger(__name__)

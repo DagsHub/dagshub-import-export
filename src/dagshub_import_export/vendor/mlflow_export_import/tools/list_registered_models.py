@@ -3,7 +3,7 @@ Lists all registered models.
 """
 
 import json
-from mlflow_export_import.client.http_client import MlflowHttpClient
+from dagshub_import_export.vendor.mlflow_export_import.client.http_client import MlflowHttpClient
 
 def main():
     client = MlflowHttpClient()

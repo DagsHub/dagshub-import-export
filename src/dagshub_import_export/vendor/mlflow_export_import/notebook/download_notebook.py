@@ -6,10 +6,10 @@ import os
 import json
 import click
 
-from mlflow_export_import.common.click_options import opt_output_dir
-from mlflow_export_import.common import utils, io_utils
-from mlflow_export_import.common import MlflowExportImportException
-from mlflow_export_import.client.http_client import DatabricksHttpClient
+from dagshub_import_export.vendor.mlflow_export_import.common.click_options import opt_output_dir
+from dagshub_import_export.vendor.mlflow_export_import.common import utils, io_utils
+from dagshub_import_export.vendor.mlflow_export_import.common import MlflowExportImportException
+from dagshub_import_export.vendor.mlflow_export_import.client.http_client import DatabricksHttpClient
 
 _logger = utils.getLogger(__name__)
 

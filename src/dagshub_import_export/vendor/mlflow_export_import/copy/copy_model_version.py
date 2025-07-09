@@ -14,11 +14,11 @@ from . click_options import (
     opt_copy_stages_and_aliases,
     opt_copy_lineage_tags
 )
-from mlflow_export_import.common.source_tags import ExportTags
-from mlflow_export_import.common.click_options import opt_verbose
-from mlflow_export_import.common import utils, model_utils, dump_utils
-from mlflow_export_import.common import ws_permissions_utils, uc_permissions_utils
-from mlflow_export_import.common.mlflow_utils import MlflowTrackingUriTweak
+from dagshub_import_export.vendor.mlflow_export_import.common.source_tags import ExportTags
+from dagshub_import_export.vendor.mlflow_export_import.common.click_options import opt_verbose
+from dagshub_import_export.vendor.mlflow_export_import.common import utils, model_utils, dump_utils
+from dagshub_import_export.vendor.mlflow_export_import.common import ws_permissions_utils, uc_permissions_utils
+from dagshub_import_export.vendor.mlflow_export_import.common.mlflow_utils import MlflowTrackingUriTweak
 
 _logger = utils.getLogger(__name__)
 
@@ -100,7 +100,7 @@ def _create_registered_model(src_client, src_model_name, dst_client, dst_model_n
         permissions = uc_permissions_utils.get_permissions(src_client, src_model_name)
         uc_permissions_utils.update_permissions(dst_client, src_model_name, permissions)
     else:
-        from mlflow_export_import.client.client_utils import create_dbx_client
+        from dagshub_import_export.vendor.mlflow_export_import.client.client_utils import create_dbx_client
         permissions = ws_permissions_utils.get_model_permissions_by_name(src_client, src_model_name)
         dbx_client = create_dbx_client(dst_client) # can move down into ws_permissions_utils.update_model_permissions
         model_utils.update_model_permissions(dst_client, dbx_client, dst_model_name, permissions)

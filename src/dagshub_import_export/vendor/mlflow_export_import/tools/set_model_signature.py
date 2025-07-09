@@ -8,7 +8,7 @@ import pandas as pd
 import click
 import mlflow
 from mlflow.models.signature import infer_signature
-from mlflow_export_import.common.dump_utils import dump_as_json
+from dagshub_import_export.vendor.mlflow_export_import.common.dump_utils import dump_as_json
 from . signature_utils import get_model_signature, to_json_signature
 
 

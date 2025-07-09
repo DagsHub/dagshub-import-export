@@ -1,8 +1,8 @@
 import mlflow
 
-from mlflow_export_import.common import utils
-from mlflow_export_import.bulk import bulk_utils
-from mlflow_export_import.common.iterators import SearchModelVersionsIterator
+from dagshub_import_export.vendor.mlflow_export_import.common import utils
+from dagshub_import_export.vendor.mlflow_export_import.bulk import bulk_utils
+from dagshub_import_export.vendor.mlflow_export_import.common.iterators import SearchModelVersionsIterator
 
 _logger = utils.getLogger(__name__)
 

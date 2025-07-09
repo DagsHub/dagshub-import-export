@@ -9,7 +9,7 @@ import click
 from concurrent.futures import ThreadPoolExecutor
 
 import mlflow
-from mlflow_export_import.common.click_options import (
+from dagshub_import_export.vendor.mlflow_export_import.common.click_options import (
     opt_input_dir,
     opt_delete_model,
     opt_use_src_user_id,
@@ -20,11 +20,11 @@ from mlflow_export_import.common.click_options import (
     opt_model_rename_file,
     opt_use_threads
 )
-from mlflow_export_import.common import utils, io_utils
-from mlflow_export_import.client.client_utils import create_mlflow_client
-from mlflow_export_import.model.import_model import BulkModelImporter
-from mlflow_export_import.bulk.import_experiments import import_experiments
-from mlflow_export_import.bulk import rename_utils
+from dagshub_import_export.vendor.mlflow_export_import.common import utils, io_utils
+from dagshub_import_export.vendor.mlflow_export_import.client.client_utils import create_mlflow_client
+from dagshub_import_export.vendor.mlflow_export_import.model.import_model import BulkModelImporter
+from dagshub_import_export.vendor.mlflow_export_import.bulk.import_experiments import import_experiments
+from dagshub_import_export.vendor.mlflow_export_import.bulk import rename_utils
 
 _logger = utils.getLogger(__name__)
 

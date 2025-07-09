@@ -8,9 +8,9 @@ import math
 import mlflow
 from mlflow.entities import Metric, Param, RunTag
 
-from mlflow_export_import.common import utils
-from mlflow_export_import.common.source_tags import ExportTags
-from mlflow_export_import.common.source_tags import mk_source_tags_mlflow_tag, mk_source_tags
+from dagshub_import_export.vendor.mlflow_export_import.common import utils
+from dagshub_import_export.vendor.mlflow_export_import.common.source_tags import ExportTags
+from dagshub_import_export.vendor.mlflow_export_import.common.source_tags import mk_source_tags_mlflow_tag, mk_source_tags
 
 
 def _log_data(run_dct, run_id, batch_size, get_data, log_data, args_get_data=None):

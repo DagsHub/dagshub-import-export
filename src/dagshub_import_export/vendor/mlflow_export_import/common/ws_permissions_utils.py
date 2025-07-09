@@ -1,6 +1,6 @@
-from mlflow_export_import.common import MlflowExportImportException
-from mlflow_export_import.common import utils
-from mlflow_export_import.client.client_utils import create_dbx_client
+from dagshub_import_export.vendor.mlflow_export_import.common import MlflowExportImportException
+from dagshub_import_export.vendor.mlflow_export_import.common import utils
+from dagshub_import_export.vendor.mlflow_export_import.client.client_utils import create_dbx_client
 
 _logger = utils.getLogger(__name__)
 

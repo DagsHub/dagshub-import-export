@@ -5,7 +5,7 @@ Sample post-processing rewriters for models and experiments:
 """
 
 import os
-from mlflow_export_import.common import io_utils
+from dagshub_import_export.vendor.mlflow_export_import.common import io_utils
 
 
 def rewrite_model(model_dct, models_dir):
@@ -20,7 +20,7 @@ def rewrite_model(model_dct, models_dir):
 def rewrite_experiment(experiment_dct, experiment_dir):
     """ processes experiment.json """
     def fmt_run(run_dct):
-        from mlflow_export_import.common.timestamp_utils import fmt_ts_millis
+        from dagshub_import_export.vendor.mlflow_export_import.common.timestamp_utils import fmt_ts_millis
         info = run_dct["info"]
         return f'run_id: {info["run_id"]} start_time: {info["start_time"]} {fmt_ts_millis(info["start_time"])}'
     runs = experiment_dct["mlflow"]["runs"]

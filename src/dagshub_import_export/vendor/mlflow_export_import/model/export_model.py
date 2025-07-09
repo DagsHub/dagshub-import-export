@@ -7,8 +7,8 @@ import click
 from dataclasses import dataclass
 from mlflow.exceptions import RestException
 
-from mlflow_export_import.client.client_utils import create_mlflow_client
-from mlflow_export_import.common.click_options import (
+from dagshub_import_export.vendor.mlflow_export_import.client.client_utils import create_mlflow_client
+from dagshub_import_export.vendor.mlflow_export_import.common.click_options import (
     opt_model,
     opt_output_dir,
     opt_notebook_formats,
@@ -19,10 +19,10 @@ from mlflow_export_import.common.click_options import (
     opt_export_permissions,
     opt_export_version_model
 )
-from mlflow_export_import.common import utils, io_utils, model_utils
-from mlflow_export_import.common.timestamp_utils import adjust_timestamps
-from mlflow_export_import.common import MlflowExportImportException
-from mlflow_export_import.run.export_run import export_run
+from dagshub_import_export.vendor.mlflow_export_import.common import utils, io_utils, model_utils
+from dagshub_import_export.vendor.mlflow_export_import.common.timestamp_utils import adjust_timestamps
+from dagshub_import_export.vendor.mlflow_export_import.common import MlflowExportImportException
+from dagshub_import_export.vendor.mlflow_export_import.run.export_run import export_run
 
 _logger = utils.getLogger(__name__)
 

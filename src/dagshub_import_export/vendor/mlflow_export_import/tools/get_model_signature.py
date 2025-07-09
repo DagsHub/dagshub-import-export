@@ -3,8 +3,8 @@ Get the signature of an MLflow model.
 """
 
 import click
-from mlflow_export_import.common import io_utils
-from mlflow_export_import.common.dump_utils import dump_as_json
+from dagshub_import_export.vendor.mlflow_export_import.common import io_utils
+from dagshub_import_export.vendor.mlflow_export_import.common.dump_utils import dump_as_json
 from . click_options import opt_model_uri, opt_output_file, opt_use_get_model_info
 from . signature_utils import get_model_signature
 

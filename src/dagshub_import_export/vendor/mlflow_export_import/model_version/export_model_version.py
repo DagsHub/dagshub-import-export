@@ -6,11 +6,11 @@ import os
 import time
 import click
 
-from mlflow_export_import.client.client_utils import create_mlflow_client, create_http_client
-from mlflow_export_import.common import utils, io_utils, model_utils
-from mlflow_export_import.common.timestamp_utils import adjust_timestamps, format_seconds
-from mlflow_export_import.run.export_run import export_run
-from mlflow_export_import.common.click_options import (
+from dagshub_import_export.vendor.mlflow_export_import.client.client_utils import create_mlflow_client, create_http_client
+from dagshub_import_export.vendor.mlflow_export_import.common import utils, io_utils, model_utils
+from dagshub_import_export.vendor.mlflow_export_import.common.timestamp_utils import adjust_timestamps, format_seconds
+from dagshub_import_export.vendor.mlflow_export_import.run.export_run import export_run
+from dagshub_import_export.vendor.mlflow_export_import.common.click_options import (
     opt_model,
     opt_output_dir,
     opt_export_permissions,

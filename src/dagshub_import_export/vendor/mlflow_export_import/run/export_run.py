@@ -8,18 +8,18 @@ import traceback
 import click
 import mlflow
 
-from mlflow_export_import.common import utils
-from mlflow_export_import.common.click_options import (
+from dagshub_import_export.vendor.mlflow_export_import.common import utils
+from dagshub_import_export.vendor.mlflow_export_import.common.click_options import (
     opt_run_id,
     opt_output_dir,
     opt_notebook_formats
 )
 from mlflow.exceptions import RestException
-from mlflow_export_import.common import filesystem as _fs
-from mlflow_export_import.common import io_utils
-from mlflow_export_import.common.timestamp_utils import adjust_timestamps, format_seconds
-from mlflow_export_import.client.client_utils import create_mlflow_client, create_dbx_client
-from mlflow_export_import.notebook.download_notebook import download_notebook
+from dagshub_import_export.vendor.mlflow_export_import.common import filesystem as _fs
+from dagshub_import_export.vendor.mlflow_export_import.common import io_utils
+from dagshub_import_export.vendor.mlflow_export_import.common.timestamp_utils import adjust_timestamps, format_seconds
+from dagshub_import_export.vendor.mlflow_export_import.client.client_utils import create_mlflow_client, create_dbx_client
+from dagshub_import_export.vendor.mlflow_export_import.notebook.download_notebook import download_notebook
 
 from mlflow.utils.mlflow_tags import MLFLOW_DATABRICKS_NOTEBOOK_PATH
 MLFLOW_DATABRICKS_NOTEBOOK_REVISION_ID = "mlflow.databricks.notebookRevisionID" # NOTE: not in mlflow/utils/mlflow_tags.py

@@ -3,10 +3,10 @@ import getpass
 import json
 import yaml
 
-from mlflow_export_import.common.timestamp_utils import ts_now_seconds, ts_now_fmt_utc
-from mlflow_export_import.common import filesystem as _fs
-from mlflow_export_import.common.source_tags import ExportFields
-from mlflow_export_import.common.pkg_version import get_version
+from dagshub_import_export.vendor.mlflow_export_import.common.timestamp_utils import ts_now_seconds, ts_now_fmt_utc
+from dagshub_import_export.vendor.mlflow_export_import.common import filesystem as _fs
+from dagshub_import_export.vendor.mlflow_export_import.common.source_tags import ExportFields
+from dagshub_import_export.vendor.mlflow_export_import.common.pkg_version import get_version
 
 
 export_file_version = "2"

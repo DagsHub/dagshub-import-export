@@ -1,5 +1,5 @@
-from mlflow_export_import.common import utils
-from mlflow_export_import.common.iterators import SearchRegisteredModelsIterator, SearchModelVersionsIterator
+from dagshub_import_export.vendor.mlflow_export_import.common import utils
+from dagshub_import_export.vendor.mlflow_export_import.common.iterators import SearchRegisteredModelsIterator, SearchModelVersionsIterator
 
 def search_model_versions(client, filter):
     if utils.calling_databricks():
