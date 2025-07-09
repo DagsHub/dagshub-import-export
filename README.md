@@ -23,7 +23,7 @@ pip install git+https://github.com/dagshub/dagshub-import-export
 
 ## Usage
 ```shell
-dagshub-import-export https://one-dagshub-deployment.com/user/repo https://another-dagshub-deployment.com/other-user/other-repo
+dagshub-import-export https://one-dagshub-deployment.com/user/repo-to-import-from https://another-dagshub-deployment.com/other-user/other-repo-to-export-to
 ```
 
 By default, everything will be imported.
