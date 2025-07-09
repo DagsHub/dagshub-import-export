@@ -13,15 +13,17 @@ from dagshub.data_engine.model.datasource import Datasource
 from dagshub.data_engine.model.schema_util import metadata_type_lookup_reverse
 
 from dagshub_import_export.models.dataengine_mappings import DataengineMappings
-
+from dagshub_import_export.models.import_config import ImportConfig
 
 logger = logging.getLogger(__name__)
 
 
-def reimport_dataengine_datasources(source: RepoAPI, destination: RepoAPI) -> DataengineMappings:
+def reimport_dataengine_datasources(import_config: ImportConfig) -> DataengineMappings:
     """
     reimport datasources and datasets
     """
+    source = import_config.source
+    destination = import_config.destination
     logger.info(f"Copying datasources and datasets from {source.repo_url} to {destination.repo_url} (without metadata)")
     set_dataengine_host(source)
     source_datasources = datasources.get_datasources(source.full_name)
@@ -83,9 +85,13 @@ def _transfer_field_definitions(source: Datasource, destination: Datasource):
             )
 
 
-def reimport_dataengine_metadata(
-    source: RepoAPI, destination: RepoAPI, de_mappings: DataengineMappings, storage_path: Path
-):
+def reimport_dataengine_metadata(import_config: ImportConfig, de_mappings: DataengineMappings):
+    source = import_config.source
+    destination = import_config.destination
+
+    storage_path = import_config.directory / "dataengine_metadata"
+    storage_path.mkdir(parents=True, exist_ok=True)
+
     logger.info(f"Copying Data Engine metadata from {source.repo_url} to {destination.repo_url}")
     set_dataengine_host(source)
     source_datasource_list = datasources.get_datasources(source.full_name)
@@ -171,22 +177,22 @@ def _replace_urls_in_metadata(metadata: bytes, source: RepoAPI, destination: Rep
 
 
 @lru_cache
-def get_datasource(host: str, repo_name: str, ds_id: int) -> Datasource:
+def get_datasource(host: str, repo: str, ds_id: int) -> Datasource:
     orig_host = dagshub.common.config.host
     try:
         dagshub.common.config.host = host
-        ds = datasources.get_datasource(repo_name, id=ds_id)
+        ds = datasources.get_datasource(repo, id=ds_id)
         return ds
     finally:
         dagshub.common.config.host = orig_host
 
 
 @lru_cache
-def get_dataset(host: str, repo_name: str, ds_id: int) -> Datasource:
+def get_dataset(host: str, repo: str, ds_id: int) -> Datasource:
     orig_host = dagshub.common.config.host
     try:
         dagshub.common.config.host = host
-        ds = datasets.get_dataset(repo_name, id=ds_id)
+        ds = datasets.get_dataset(repo, id=ds_id)
         return ds
     finally:
         dagshub.common.config.host = orig_host

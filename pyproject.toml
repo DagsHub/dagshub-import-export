@@ -3,6 +3,7 @@ name = "dagshub-import-export"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
+license = "MIT"
 authors = [
     { name = "KBolashev", email = "kirill@dagshub.com" }
 ]
@@ -10,21 +11,24 @@ requires-python = ">=3.11.7"
 dependencies = [
     "click>=8.2.1",
     "dagshub",
-    "mlflow==2.22.0",
-    "mlflow-export-import",
+    "label-studio-sdk~=1.0",
+    "pandas>=2.3.0",
     "pydantic>=2.11.7",
     "requests>=2.32.4",
+    "tenacity>=9.1.2",
+    # dependencies of mlflow-export-import
+    "tabulate>=0.9.0",
+    "wheel>=0.45.1",
+    "mlflow-skinny[databricks]==2.22.0",
+    "databricks-cli>=0.18.0",
 ]
 
 [project.scripts]
-dagshub-import-export = "dagshub_import_export:main"
+dagshub-import-export = "dagshub_import_export.main:cli"
 
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
-
-[tool.uv.sources]
-mlflow-export-import = { git = "ssh://git@github.com/dagshub/mlflow-export-import", rev = "dagshub-specific-fixes" }
 
 [tool.ruff]
 line-length = 120

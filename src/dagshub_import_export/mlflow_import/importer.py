@@ -8,14 +8,15 @@ from tempfile import TemporaryDirectory
 import mlflow
 from dagshub.common.api import RepoAPI, UserAPI
 from dagshub.data_engine.model.datasource import Datasource
-from mlflow_export_import.bulk.export_all import export_all
-from mlflow_export_import.bulk.import_experiments import import_experiments
-from mlflow_export_import.bulk.import_models import import_models
 
 from dagshub_import_export.dataengine import set_dataengine_host, get_dataset, get_datasource
 from dagshub_import_export.models.dataengine_mappings import DataengineMappings
 from dagshub_import_export.util import get_token
 from mlflow.tracking import MlflowClient
+
+from dagshub_import_export.vendor.mlflow_export_import.bulk.export_all import export_all
+from dagshub_import_export.vendor.mlflow_export_import.bulk.import_experiments import import_experiments
+from dagshub_import_export.vendor.mlflow_export_import.bulk.import_models import import_models
 
 logger = logging.getLogger(__name__)
 

@@ -1,5 +1,4 @@
 import logging
-from dataclasses import dataclass
 from pathlib import PurePosixPath
 from urllib.parse import urlparse
 
@@ -8,14 +7,7 @@ from dagshub.common.api import RepoAPI
 from dagshub.common.util import multi_urljoin
 
 
-@dataclass
-class RepoUrlInfo:
-    hostname: str
-    repo: str
-    repoApi: RepoAPI
-
-
-def parse_repo_url(repo_url) -> RepoUrlInfo:
+def parse_repo_url(repo_url) -> RepoAPI:
     """
     Extracts the host from a given repository URL.
 
@@ -31,12 +23,12 @@ def parse_repo_url(repo_url) -> RepoUrlInfo:
     parsed_url = urlparse(repo_url)
     path = PurePosixPath(parsed_url.path)
     if len(path.parts) < 3:
-        raise ValueError(f"Repository URL must be in the format of 'http(s)://host/user/repo', got {repo_url}")
+        raise ValueError("Repository URL must be in the format of 'http(s)://host/user/repo'")
     hostname = f"{parsed_url.scheme}://{parsed_url.netloc}"
     hostname = multi_urljoin(hostname, *path.parts[:-2])
     repo = path.parts[-2] + "/" + path.parts[-1]
     repoApi = RepoAPI(host=hostname, repo=repo)
-    return RepoUrlInfo(hostname=hostname, repo=repo, repoApi=repoApi)
+    return repoApi
 
 
 def get_token(host):
