@@ -3,6 +3,7 @@ from pathlib import PurePosixPath
 from urllib.parse import urlparse
 
 import dagshub.auth
+import urllib3
 from dagshub.common.api import RepoAPI
 from dagshub.common.util import multi_urljoin
 
@@ -42,3 +43,4 @@ def init_logging():
     # Turn off noisy network-level loggers that clutter up info output
     logging.getLogger("gql.transport.requests").setLevel(logging.WARNING)
     logging.getLogger("httpx").setLevel(logging.WARNING)
+    urllib3.disable_warnings()
