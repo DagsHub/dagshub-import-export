@@ -174,7 +174,6 @@ def cli(
     - (for datasources) The destination repository has the same connected integrations as the source repository.
     - (for MLflow) There is nothing in the destination repository's MLflow.
     """
-    click.echo("Hello from click")
     main(
         source_url,
         destination_url,
