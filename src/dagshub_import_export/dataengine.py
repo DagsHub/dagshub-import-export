@@ -148,6 +148,8 @@ def get_exportable_dataframe(source_ds: Datasource, dest_ds: Datasource) -> pd.D
         else:
             logger.warning(f"Unsupported annotation type: {type(ann)}: {ann}")
             return None
+        if content is None:
+            return None
         content = _replace_urls_in_metadata(content, source_ds.source.repoApi, dest_ds.source.repoApi)
         return content
 
