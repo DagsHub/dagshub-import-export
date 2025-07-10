@@ -5,6 +5,7 @@ from dagshub.common.api.repo import BranchNotFoundError
 from dagshub.common.api.responses import StorageAPIEntry
 from dagshub.common.util import multi_urljoin
 
+from dagshub_import_export.mlflow_import.importer import has_mlflow_experiments
 from dagshub_import_export.models.import_config import ImportConfig
 from dagshub_import_export.util import logger_name
 
@@ -53,7 +54,6 @@ def can_push_git(source: RepoAPI, destination: RepoAPI) -> bool:
         logger.info("Destination git repository is already up to date")
         return False
     else:
-        # TODO: add URL for removing/recreating
         raise RepoNotReadyError(
             f"Destination repo {destination.repo_name} is not empty, please delete it and create a new blank repo.\n"
             f"Link to settings: {multi_urljoin(destination.repo_url, 'settings')}"
@@ -89,6 +89,13 @@ def check_integration_parity(source: RepoAPI, destination: RepoAPI):
             f"Destination repo {destination.repo_name} does not have the following integrations:"
             f"\n{msg}"
             f"\nPlease add them."
+        )
+
+
+def mlflow_checks(import_config: ImportConfig):
+    if has_mlflow_experiments(import_config.destination):
+        raise RepoNotReadyError(
+            f"Destination repo {import_config.destination.repo_url} already has MLflow experiments."
         )
 
 

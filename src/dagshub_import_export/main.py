@@ -9,7 +9,13 @@ from tempfile import TemporaryDirectory
 
 from dagshub.common.api import RepoAPI
 
-from dagshub_import_export.checks import run_dataengine_checks, can_push_git, RepoNotReadyError, print_accessing_users
+from dagshub_import_export.checks import (
+    run_dataengine_checks,
+    can_push_git,
+    RepoNotReadyError,
+    print_accessing_users,
+    mlflow_checks,
+)
 from dagshub_import_export.dataengine import reimport_dataengine_datasources, reimport_dataengine_metadata
 from dagshub_import_export.git_module import reimport_git_repo
 from dagshub_import_export.labelstudio_import.importer import reimport_labelstudio
@@ -49,7 +55,8 @@ def run_preflight_checks(import_config: ImportConfig):
         import_config.git = can_push
     if import_config.datasources:
         run_dataengine_checks(import_config)
-    # TODO: check mlflow
+    if import_config.mlflow:
+        mlflow_checks(import_config)
 
 
 def reimport_repo(import_config: ImportConfig):

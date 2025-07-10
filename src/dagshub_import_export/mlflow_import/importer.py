@@ -142,6 +142,13 @@ def _process_datasource_json(
     return json.dumps(serialized, indent=2).encode("utf-8")
 
 
+def has_mlflow_experiments(repo: RepoAPI) -> bool:
+    _set_mlflow_auth(repo)
+    client = _get_mlflow_client(repo)
+    experiments = client.search_experiments()
+    return len(experiments) > 0
+
+
 def _import_mlflow(repo: RepoAPI, source_dir: str):
     _set_mlflow_auth(repo)
     client = _get_mlflow_client(repo)
