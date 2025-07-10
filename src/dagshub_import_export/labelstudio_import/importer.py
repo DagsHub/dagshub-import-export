@@ -7,8 +7,9 @@ from dagshub.common.api import RepoAPI
 from dagshub_import_export.dataengine import get_datasource
 from dagshub_import_export.models.dataengine_mappings import DataengineMappings
 from dagshub_import_export.models.import_config import ImportConfig
+from dagshub_import_export.util import logger_name
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger(logger_name)
 
 if TYPE_CHECKING:
     from label_studio_sdk import Project, LabelStudio

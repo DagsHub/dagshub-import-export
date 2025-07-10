@@ -12,8 +12,7 @@ from dagshub.data_engine.model.datasource import Datasource
 from dagshub_import_export.dataengine import set_dataengine_host, get_dataset, get_datasource
 from dagshub_import_export.models.dataengine_mappings import DataengineMappings
 from dagshub_import_export.models.import_config import ImportConfig
-from dagshub_import_export.util import get_token
-
+from dagshub_import_export.util import get_token, logger_name
 
 if TYPE_CHECKING:
     import dagshub_import_export.vendor.mlflow_export_import.bulk as mlflow_export_import
@@ -24,7 +23,7 @@ else:
     mlflow = lazy_load("mlflow")
     mlflow_tracking = lazy_load("mlflow.tracking")
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger(logger_name)
 
 
 def reimport_mlflow(import_config: ImportConfig, ds_map: DataengineMappings):

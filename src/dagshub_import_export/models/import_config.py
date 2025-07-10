@@ -5,7 +5,9 @@ from typing import Tuple
 
 from dagshub.common.api import RepoAPI
 
-logger = logging.getLogger(__name__)
+from dagshub_import_export.util import logger_name
+
+logger = logging.getLogger(logger_name)
 
 
 @dataclass
@@ -83,13 +85,13 @@ class ImportConfig:
             f"to\n"
             f"\t{self.destination.repo_url}\n"
             f"Enabled imports:\n"
-            f"\tGit: {self.git}\n"
-            f"\tDVC: {self.dvc}\n"
-            f"\tRepo Bucket: {self.repo_bucket}\n"
-            f"\tDatasources: {self.datasources}\n"
-            f"\tMetadata: {self.metadata}\n"
-            f"\tMLflow: {self.mlflow}\n"
-            f"\tLabel Studio: {self.labelstudio}\n"
+            f"\tGit:           {self.git}\n"
+            f"\tDVC:           {self.dvc}\n"
+            f"\tRepo Bucket:   {self.repo_bucket}\n"
+            f"\tDatasources:   {self.datasources}\n"
+            f"\tMetadata:      {self.metadata}\n"
+            f"\tMLflow:        {self.mlflow}\n"
+            f"\tLabel Studio:  {self.labelstudio}\n"
             f"\nStorage directory: {self.directory}\n"
         )
 

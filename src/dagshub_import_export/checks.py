@@ -1,13 +1,14 @@
 import logging
 
-from dagshub.common.api import RepoAPI
+from dagshub.common.api import RepoAPI, UserAPI
 from dagshub.common.api.repo import BranchNotFoundError
 from dagshub.common.api.responses import StorageAPIEntry
 from dagshub.common.util import multi_urljoin
 
 from dagshub_import_export.models.import_config import ImportConfig
+from dagshub_import_export.util import logger_name
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger(logger_name)
 
 
 class RepoNotReadyError(Exception):
@@ -17,6 +18,16 @@ class RepoNotReadyError(Exception):
 
     def __str__(self):
         return f"RepoNotReadyError: {self.message}"
+
+
+def print_accessing_users(import_config: ImportConfig):
+    print_accessing_user(import_config.source)
+    print_accessing_user(import_config.destination)
+
+
+def print_accessing_user(repo: RepoAPI):
+    user = UserAPI.get_current_user(repo.host)
+    logger.info(f"Accessing repository {repo.repo_url} as user {user.username}")
 
 
 def can_push_git(source: RepoAPI, destination: RepoAPI) -> bool:

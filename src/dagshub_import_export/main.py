@@ -9,16 +9,16 @@ from tempfile import TemporaryDirectory
 
 from dagshub.common.api import RepoAPI
 
-from dagshub_import_export.checks import run_dataengine_checks, can_push_git, RepoNotReadyError
+from dagshub_import_export.checks import run_dataengine_checks, can_push_git, RepoNotReadyError, print_accessing_users
 from dagshub_import_export.dataengine import reimport_dataengine_datasources, reimport_dataengine_metadata
 from dagshub_import_export.git_module import reimport_git_repo
 from dagshub_import_export.labelstudio_import.importer import reimport_labelstudio
 from dagshub_import_export.mlflow_import.importer import reimport_mlflow
 from dagshub_import_export.models.import_config import ImportConfig
 from dagshub_import_export.rclone import copy_rclone_dvc, copy_rclone_repo_bucket
-from dagshub_import_export.util import parse_repo_url, init_logging
+from dagshub_import_export.util import parse_repo_url, init_logging, logger_name
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger(logger_name)
 
 
 class DagshubRepoParamType(click.ParamType):
@@ -36,6 +36,8 @@ DAGSHUB_REPO = DagshubRepoParamType()
 
 def run_preflight_checks(import_config: ImportConfig):
     source, destination = import_config.source_and_destination
+
+    print_accessing_users(import_config)
 
     dest_info = destination.get_repo_info()
     can_push = dest_info.permissions.get("push", False)

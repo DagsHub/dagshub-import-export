@@ -4,11 +4,11 @@ import subprocess
 from pathlib import Path
 
 from dagshub_import_export.models.import_config import ImportConfig
-from dagshub_import_export.util import get_token
+from dagshub_import_export.util import get_token, logger_name
 from dagshub.common.api import RepoAPI
 import git
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger(logger_name)
 
 
 def reimport_git_repo(import_config: ImportConfig):

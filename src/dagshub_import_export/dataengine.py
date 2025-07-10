@@ -14,8 +14,9 @@ from dagshub.data_engine.model.schema_util import metadata_type_lookup_reverse
 
 from dagshub_import_export.models.dataengine_mappings import DataengineMappings
 from dagshub_import_export.models.import_config import ImportConfig
+from dagshub_import_export.util import logger_name
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger(logger_name)
 
 
 def reimport_dataengine_datasources(import_config: ImportConfig) -> DataengineMappings:

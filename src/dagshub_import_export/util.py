@@ -6,6 +6,8 @@ import dagshub.auth
 from dagshub.common.api import RepoAPI
 from dagshub.common.util import multi_urljoin
 
+logger_name = "dagshub_import_export"
+
 
 def parse_repo_url(repo_url) -> RepoAPI:
     """
