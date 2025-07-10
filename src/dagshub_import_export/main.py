@@ -14,7 +14,6 @@ from dagshub_import_export.checks import (
     can_push_git,
     RepoNotReadyError,
     print_accessing_users,
-    mlflow_checks,
 )
 from dagshub_import_export.dataengine import reimport_dataengine_datasources, reimport_dataengine_metadata
 from dagshub_import_export.git_module import reimport_git_repo
@@ -56,12 +55,12 @@ def run_preflight_checks(import_config: ImportConfig) -> bool:
             import_config.git = can_push
         if import_config.datasources:
             run_dataengine_checks(import_config)
-        if import_config.mlflow:
-            mlflow_checks(import_config)
+        # if import_config.mlflow:
+        # mlflow_checks(import_config)
         return True
 
     except RepoNotReadyError as e:
-        logger.warning(f"Cannot import repository because a prerequisite check failed: {e.message}")
+        print(f"Cannot import repository because a prerequisite check failed: {e.message}")
         return False
 
 

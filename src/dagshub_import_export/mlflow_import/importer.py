@@ -15,11 +15,9 @@ from dagshub_import_export.models.import_config import ImportConfig
 from dagshub_import_export.util import get_token, logger_name
 
 if TYPE_CHECKING:
-    import dagshub_import_export.vendor.mlflow_export_import.bulk as mlflow_export_import
     import mlflow
     import mlflow.tracking as mlflow_tracking
 else:
-    mlflow_export_import = lazy_load("dagshub_import_export.vendor.mlflow_export_import.bulk")
     mlflow = lazy_load("mlflow")
     mlflow_tracking = lazy_load("mlflow.tracking")
 
@@ -41,11 +39,13 @@ def reimport_mlflow(import_config: ImportConfig, ds_map: DataengineMappings):
 
 
 def _export_mlflow(repo: RepoAPI, dest_dir: str):
+    from dagshub_import_export.vendor.mlflow_export_import.bulk.export_all import export_all
+
     logger.info(f"Exporting MLflow data from {repo.repo_url} to {dest_dir}")
     _set_mlflow_auth(repo)
     client = _get_mlflow_client(repo)
 
-    mlflow_export_import.export_all(dest_dir, mlflow_client=client)
+    export_all(dest_dir, mlflow_client=client)
 
 
 def change_dataengine_ids(source: RepoAPI, destination: RepoAPI, source_dir: str, ds_map: DataengineMappings) -> str:
@@ -150,13 +150,13 @@ def has_mlflow_experiments(repo: RepoAPI) -> bool:
 
 
 def _import_mlflow(repo: RepoAPI, source_dir: str):
+    from dagshub_import_export.vendor.mlflow_export_import.bulk.import_models import import_models
+
     _set_mlflow_auth(repo)
     client = _get_mlflow_client(repo)
 
-    # TODO: check if mlflow is empty. If it's not, prompt user to remove everything (rerunning will create duplicates)
-
-    mlflow_export_import.import_experiments(os.path.join(source_dir, "experiments"), mlflow_client=client)
-    mlflow_export_import.import_models(source_dir, mlflow_client=client, delete_model=True)
+    # import_experiments(os.path.join(source_dir, "experiments"), mlflow_client=client)
+    import_models(source_dir, mlflow_client=client, delete_model=True)
 
 
 def _get_mlflow_client(repo: RepoAPI):
