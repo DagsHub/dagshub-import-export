@@ -8,6 +8,8 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 
 from dagshub.common.api import RepoAPI
+from dagshub.common.api.repo import RepoNotFoundError
+from dagshub.common.util import multi_urljoin
 
 from dagshub_import_export.checks import (
     run_dataengine_checks,
@@ -58,7 +60,15 @@ def run_preflight_checks(import_config: ImportConfig) -> bool:
         # if import_config.mlflow:
         # mlflow_checks(import_config)
         return True
-
+    except RepoNotFoundError:
+        print(
+            f"Destination repository not found!\n"
+            f"Create it first by going to this link:\n"
+            f"{multi_urljoin(destination.host, 'repo/create')}?preselect=none\n"
+            f"Or mirror an existing repository:\n"
+            f"{multi_urljoin(destination.host, 'repo/connect/any')}"
+        )
+        return False
     except RepoNotReadyError as e:
         print(f"Cannot import repository because a prerequisite check failed: {e.message}")
         return False

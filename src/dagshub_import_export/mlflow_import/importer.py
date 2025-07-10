@@ -45,7 +45,7 @@ def _export_mlflow(repo: RepoAPI, dest_dir: str):
     _set_mlflow_auth(repo)
     client = _get_mlflow_client(repo)
 
-    export_all(dest_dir, mlflow_client=client)
+    export_all(dest_dir, mlflow_client=client, export_deleted_runs=True, export_version_model=True)
 
 
 def change_dataengine_ids(source: RepoAPI, destination: RepoAPI, source_dir: str, ds_map: DataengineMappings) -> str:
