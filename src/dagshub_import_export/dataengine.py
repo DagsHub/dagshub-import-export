@@ -113,8 +113,6 @@ def reimport_dataengine_metadata(import_config: ImportConfig, de_mappings: Datae
                 f"Destination datasource with ID {new_ds_id} not found in datasources of repo {destination.full_name}."
             )
         _reimport_datasource_metadata(orig_ds, dest_ds, storage_path)
-        # TODO: remove so we import more than one datasource's metadata
-        break
 
 
 def _reimport_datasource_metadata(orig_ds: Datasource, new_ds: Datasource, storage_path: Path):
@@ -139,7 +137,6 @@ def get_exportable_dataframe(source_ds: Datasource, dest_ds: Datasource) -> pd.D
         if ann is None:
             return None
         elif isinstance(ann, MetadataAnnotations):
-            # TODO: change URLs
             content = ann.to_ls_task()
         elif isinstance(ann, bytes):
             content = ann
