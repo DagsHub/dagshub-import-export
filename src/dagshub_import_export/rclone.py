@@ -36,7 +36,7 @@ def copy_rclone(source: RepoAPI, destination: RepoAPI, endpoint_fn: Callable, bu
 
     args = [
         "rclone",
-        "copy",
+        "sync",
         "--config",
         str(rclone_cfg_path),
         source_address,
