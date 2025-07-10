@@ -156,7 +156,7 @@ def _import_mlflow(repo: RepoAPI, source_dir: str):
     client = _get_mlflow_client(repo)
 
     # import_experiments(os.path.join(source_dir, "experiments"), mlflow_client=client)
-    import_models(source_dir, mlflow_client=client)
+    import_models(source_dir, mlflow_client=client, delete_model=False)
 
 
 def _get_mlflow_client(repo: RepoAPI):
