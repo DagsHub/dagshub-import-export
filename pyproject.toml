@@ -1,7 +1,7 @@
 [project]
 name = "dagshub-import-export"
 version = "0.1.0"
-description = "Add your description here"
+description = "Tool to copy DagsHub repositories"
 readme = "README.md"
 license = "MIT"
 authors = [
