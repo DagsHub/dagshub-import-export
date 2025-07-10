@@ -45,11 +45,13 @@ def reimport_dataengine_datasources(import_config: ImportConfig) -> DataengineMa
             continue
         ds_path = source_ds.source.path
         revision = None
-        # TODO: also replace repo bucket ? need to check
         if ds_path.startswith("repo://"):
             ds_path = ds_path.removeprefix(f"repo://{source.full_name}")
             revision, ds_path = ds_path.split(":")
             revision = revision.removeprefix("/")
+        # Repo bucket
+        elif ds_path.startswith(f"s3://{source.repo_name}"):
+            ds_path = ds_path.replace(f"s3://{source.repo_name}", f"s3://{destination.repo_name}")
         new_ds = datasources.create_datasource(destination.full_name, source_ds.source.name, ds_path, revision=revision)
         _transfer_field_definitions(source_ds, new_ds)
         res.datasources[source_ds.source.id] = new_ds.source.id
@@ -221,7 +223,8 @@ def _get_pure_ds_path(ds: Datasource) -> str:
     p = ds.source.path
     if p.startswith("repo://"):
         p = p.removeprefix(f"repo://{ds.source.repoApi.full_name}")
-    # TODO: check repo bucket
+    if p.startswith(f"s3://{ds.source.repoApi.repo_name}"):
+        p = p.replace(f"s3://{ds.source.repoApi.repo_name}", "repo-bucket://")
     return p
 
 
