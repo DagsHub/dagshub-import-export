@@ -12,7 +12,7 @@ from dagshub.data_engine.model.datasource import Datasource
 from dagshub_import_export.dataengine import set_dataengine_host, get_dataset, get_datasource
 from dagshub_import_export.models.dataengine_mappings import DataengineMappings
 from dagshub_import_export.models.import_config import ImportConfig
-from dagshub_import_export.util import get_token, logger_name
+from dagshub_import_export.util import get_token, logger_name, retry_5_times
 
 if TYPE_CHECKING:
     import mlflow
@@ -38,6 +38,7 @@ def reimport_mlflow(import_config: ImportConfig, ds_map: DataengineMappings):
     logger.info("Finished reimporting MLflow data")
 
 
+@retry_5_times
 def _export_mlflow(repo: RepoAPI, dest_dir: str):
     from dagshub_import_export.vendor.mlflow_export_import.bulk.export_all import export_all
 
@@ -149,6 +150,7 @@ def has_mlflow_experiments(repo: RepoAPI) -> bool:
     return len(experiments) > 0
 
 
+@retry_5_times
 def _import_mlflow(repo: RepoAPI, source_dir: str):
     from dagshub_import_export.vendor.mlflow_export_import.bulk.import_models import import_models
 

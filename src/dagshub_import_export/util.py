@@ -3,11 +3,19 @@ from pathlib import PurePosixPath
 from urllib.parse import urlparse
 
 import dagshub.auth
+import tenacity
 import urllib3
 from dagshub.common.api import RepoAPI
 from dagshub.common.util import multi_urljoin
+from tenacity import before_sleep_log
 
 logger_name = "dagshub_import_export"
+
+logger = logging.getLogger(logger_name)
+
+retry_5_times = tenacity.retry(
+    stop=tenacity.stop_after_attempt(5), reraise=True, before_sleep=before_sleep_log(logger, logging.INFO)
+)
 
 
 def parse_repo_url(repo_url) -> RepoAPI:
