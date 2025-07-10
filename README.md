@@ -5,7 +5,7 @@ To run: Python 3.10 or later
 Repository requirements:
 - The source and destination repositories exist and are accessible from this computer,
   and you have permission to write to the destination.
-- (for datasources) The destination repository has the same connected integrations as the source repository.
+- (for datasources) The destination repository has (at least) the same connected buckets as the source repository.
 - (for MLflow) There is nothing in the destination repository's MLflow.
 
 
