@@ -40,23 +40,29 @@ class DagshubRepoParamType(click.ParamType):
 DAGSHUB_REPO = DagshubRepoParamType()
 
 
-def run_preflight_checks(import_config: ImportConfig):
+def run_preflight_checks(import_config: ImportConfig) -> bool:
     source, destination = import_config.source_and_destination
 
     print_accessing_users(import_config)
 
-    dest_info = destination.get_repo_info()
-    can_push = dest_info.permissions.get("push", False)
-    if not can_push:
-        raise RepoNotReadyError("You do not have write permission for the destination repository.")
+    try:
+        dest_info = destination.get_repo_info()
+        can_push = dest_info.permissions.get("push", False)
+        if not can_push:
+            raise RepoNotReadyError("You do not have write permission for the destination repository.")
 
-    if import_config.git:
-        can_push = can_push_git(source, destination)
-        import_config.git = can_push
-    if import_config.datasources:
-        run_dataengine_checks(import_config)
-    if import_config.mlflow:
-        mlflow_checks(import_config)
+        if import_config.git:
+            can_push = can_push_git(source, destination)
+            import_config.git = can_push
+        if import_config.datasources:
+            run_dataengine_checks(import_config)
+        if import_config.mlflow:
+            mlflow_checks(import_config)
+        return True
+
+    except RepoNotReadyError as e:
+        logger.warning(f"Cannot import repository because a prerequisite check failed: {e.message}")
+        return False
 
 
 def reimport_repo(import_config: ImportConfig):
@@ -124,7 +130,10 @@ def main(
             directory=directory,
         )
         logger.info(import_config)
-        run_preflight_checks(import_config)
+        preflight_success = run_preflight_checks(import_config)
+        if not preflight_success:
+            return
+
         reimport_repo(import_config)
     finally:
         if tmp_dir is not None:

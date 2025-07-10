@@ -18,7 +18,7 @@ class RepoNotReadyError(Exception):
         self.message = message
 
     def __str__(self):
-        return f"RepoNotReadyError: {self.message}"
+        return self.message
 
 
 def print_accessing_users(import_config: ImportConfig):
