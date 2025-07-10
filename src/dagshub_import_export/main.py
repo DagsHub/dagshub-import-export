@@ -79,28 +79,35 @@ def reimport_repo(import_config: ImportConfig):
     logger.info(f"Importing repository from {source.repo_url} to {destination.repo_url}")
 
     if import_config.git:
+        logger.info("\n  ======  GIT  ======  \n")
         reimport_git_repo(import_config)
 
     if import_config.dvc:
+        logger.info("\n  ======  DVC  ======  \n")
         logger.info("Copying DVC data")
         copy_rclone_dvc(import_config)
 
     if import_config.repo_bucket:
+        logger.info("\n  ======  REPO BUCKET  ======  \n")
         logger.info("Copying repository bucket data")
         copy_rclone_repo_bucket(import_config)
 
     if import_config.datasources:
+        logger.info("\n  ======  DATASOURCES  ======  \n")
         ds_map = reimport_dataengine_datasources(import_config)
 
-        if import_config.mlflow:
-            logger.info("Copying MLflow data")
-            reimport_mlflow(import_config, ds_map)
-
         if import_config.metadata:
+            logger.info("\n  ======  DATASOURCE METADATA  ======  \n")
             logger.info("Copying Data Engine data")
             reimport_dataengine_metadata(import_config, ds_map)
 
+        if import_config.mlflow:
+            logger.info("\n  ======  MLFLOW  ======  \n")
+            logger.info("Copying MLflow data")
+            reimport_mlflow(import_config, ds_map)
+
         if import_config.labelstudio:
+            logger.info("\n  ======  LABELSTUDIO  ======  \n")
             logger.info("Copying Label Studio data")
             reimport_labelstudio(import_config, ds_map)
 
