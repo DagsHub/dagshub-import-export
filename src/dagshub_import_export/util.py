@@ -38,7 +38,7 @@ def get_token(host):
 
 
 def init_logging():
-    logging.basicConfig(level=logging.INFO)
+    logging.basicConfig(level=logging.INFO, format="%(asctime)s: %(message)s", datefmt="%Y-%m-%d %H:%M:%S")
     # Turn off noisy network-level loggers that clutter up info output
     logging.getLogger("gql.transport.requests").setLevel(logging.WARNING)
     logging.getLogger("httpx").setLevel(logging.WARNING)

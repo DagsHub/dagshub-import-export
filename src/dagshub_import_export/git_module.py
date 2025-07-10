@@ -14,7 +14,7 @@ logger = logging.getLogger(logger_name)
 def reimport_git_repo(import_config: ImportConfig):
     source, destination = import_config.source_and_destination
 
-    logger.info("Mirroring Git repository")
+    logger.info("Cloning Git repository")
     git_dir = import_config.directory / "repo"
     git_repo = clone_repo(source, git_dir)
     mirror_repo(git_repo, destination)
