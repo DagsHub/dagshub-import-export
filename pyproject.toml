@@ -21,6 +21,7 @@ dependencies = [
     "wheel>=0.45.1",
     "mlflow-skinny[databricks]==2.22.0",
     "databricks-cli>=0.18.0",
+    "pyarrow>=20.0.0",
 ]
 
 [project.scripts]
