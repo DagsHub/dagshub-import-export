@@ -27,7 +27,7 @@ logger = logging.getLogger(logger_name)
 def reimport_mlflow(import_config: ImportConfig, ds_map: DataengineMappings):
     source, destination = import_config.source_and_destination
     mlflow_dir = str(import_config.directory / "mlflow")  # Use strings here because of mlflow's export/import functions
-    # _export_mlflow(source, mlflow_dir)
+    _export_mlflow(source, mlflow_dir)
     processed_mlflow_dir = None
     try:
         processed_mlflow_dir = change_dataengine_ids(source, destination, mlflow_dir, ds_map)
