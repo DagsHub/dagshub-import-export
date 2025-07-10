@@ -2,7 +2,7 @@
 
 This Python package can be used as a CLI to copy almost all aspects of a DagsHub repo, even across different DagsHub installations.
 
-What's being copied:
+__What's being copied:__
 - Git
 - Data stored in the repo's DagsHub storage bucket
 - DVC managed data, provided that it's pushed to the DagsHub repo's builtin DVC remote
