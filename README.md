@@ -1,12 +1,30 @@
+# DagsHub Import-Export tool
+
+This Python package can be used as a CLI to copy almost all aspects of a DagsHub repo, even across different DagsHub installations.
+
+This copies:
+- [x] Git
+- [x] Data stored in the repo's DagsHub storage bucket
+- [x] DVC managed data, provided that it's pushed to the DagsHub repo's builtin DVC remote
+- [x] MLflow experiments
+- [x] MLflow models (?)
+- [x] MLflow artifacts
+- [x] DagsHub Data Engine datasources and datasets, including all __latest__ metadata, annotations, etc.
+
+__Not copied yet:__
+- [ ] Label Studio projects and tasks. Prior to running this tool, you should click the green Save icon at the top of the Label Studio project UI to save the tasks as metadata back to Data Engine, which does get copied and can be used to re-create the Label Studio project and tasks in the new location.
+- [ ] MLflow traces (LLM traces feature)
+- [ ] _Historical_ versions of Data Engine (datasources) metadata values. Only the current version of metadata values is currently copied. Contact us if copying the full history is a requirement.
 
 ## Requirements
 To run: Python 3.10 or later
 
-Repository requirements:
+### Prerequisites:
 - The source and destination repositories exist and are accessible from this computer,
   and you have permission to write to the destination.
-- (for datasources) The destination repository has (at least) the same connected buckets as the source repository.
-- (for MLflow) There is nothing in the destination repository's MLflow.
+- (for datasources) The destination repository has (at least) the same connected buckets as the source repository. You need to manually connect the same buckets in the target repo before starting this script. If any bucket is missing in the target, the script will print a warning and refuse to start.
+- (for MLflow) There is nothing in the destination repository's MLflow. If any experiments are already logged in the target repo, the script will print a warning and refuse to start.
+- Since Label Studio projects and tasks are currently not copied, it's __strongly recommended__ that you Save any existing Label Studio projects back to a Data Engine metadata field. Otherwise, the existing human-labeled task data will be left behind.
 
 
 ## Installation
