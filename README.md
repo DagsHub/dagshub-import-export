@@ -3,18 +3,18 @@
 This Python package can be used as a CLI to copy almost all aspects of a DagsHub repo, even across different DagsHub installations.
 
 This copies:
-- [x] Git
-- [x] Data stored in the repo's DagsHub storage bucket
-- [x] DVC managed data, provided that it's pushed to the DagsHub repo's builtin DVC remote
-- [x] MLflow experiments
-- [x] MLflow models (?)
-- [x] MLflow artifacts
-- [x] DagsHub Data Engine datasources and datasets, including all __latest__ metadata, annotations, etc.
+- Git
+- Data stored in the repo's DagsHub storage bucket
+- DVC managed data, provided that it's pushed to the DagsHub repo's builtin DVC remote
+- MLflow experiments
+- MLflow models (?)
+- MLflow artifacts
+- DagsHub Data Engine datasources and datasets, including all __latest__ metadata, annotations, etc.
 
 __Not copied yet:__
-- [ ] Label Studio projects and tasks. Prior to running this tool, you should click the green Save icon at the top of the Label Studio project UI to save the tasks as metadata back to Data Engine, which does get copied and can be used to re-create the Label Studio project and tasks in the new location.
-- [ ] MLflow traces (LLM traces feature)
-- [ ] _Historical_ versions of Data Engine (datasources) metadata values. Only the current version of metadata values is currently copied. Contact us if copying the full history is a requirement.
+- Label Studio projects and tasks. Prior to running this tool, you should click the green Save icon at the top of the Label Studio project UI to save the tasks as metadata back to Data Engine, which does get copied and can be used to re-create the Label Studio project and tasks in the new location.
+- MLflow traces (LLM traces feature)
+- _Historical_ versions of Data Engine (datasources) metadata values. Only the current version of metadata values is currently copied. Contact us if copying the full history is a requirement.
 
 ## Requirements
 To run: Python 3.10 or later
