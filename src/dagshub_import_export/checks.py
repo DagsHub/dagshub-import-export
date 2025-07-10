@@ -1,9 +1,9 @@
-# TODO: check that the destination repo has all storage integrations of the original repo
 import logging
 
 from dagshub.common.api import RepoAPI
 from dagshub.common.api.repo import BranchNotFoundError
 from dagshub.common.api.responses import StorageAPIEntry
+from dagshub.common.util import multi_urljoin
 
 from dagshub_import_export.models.import_config import ImportConfig
 
@@ -44,7 +44,8 @@ def can_push_git(source: RepoAPI, destination: RepoAPI) -> bool:
     else:
         # TODO: add URL for removing/recreating
         raise RepoNotReadyError(
-            f"Destination repo {destination.repo_name} is not empty, please delete it and create a new blank repo."
+            f"Destination repo {destination.repo_name} is not empty, please delete it and create a new blank repo.\n"
+            f"Link to settings: {multi_urljoin(destination.repo_url, 'settings')}"
         )
 
 

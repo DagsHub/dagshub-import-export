@@ -3,7 +3,6 @@ import os
 import subprocess
 from pathlib import Path
 
-from dagshub_import_export.checks import can_push_git
 from dagshub_import_export.models.import_config import ImportConfig
 from dagshub_import_export.util import get_token
 from dagshub.common.api import RepoAPI
@@ -15,11 +14,10 @@ logger = logging.getLogger(__name__)
 def reimport_git_repo(import_config: ImportConfig):
     source, destination = import_config.source_and_destination
 
-    if can_push_git(source, destination):
-        logger.info("Mirroring Git repository")
-        git_dir = import_config.directory / "repo"
-        git_repo = clone_repo(source, git_dir)
-        mirror_repo(git_repo, destination)
+    logger.info("Mirroring Git repository")
+    git_dir = import_config.directory / "repo"
+    git_repo = clone_repo(source, git_dir)
+    mirror_repo(git_repo, destination)
 
 
 def mirror_repo(repo: git.Repo, destination_repo: RepoAPI):

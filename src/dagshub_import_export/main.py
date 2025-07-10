@@ -9,7 +9,7 @@ from tempfile import TemporaryDirectory
 
 from dagshub.common.api import RepoAPI
 
-from dagshub_import_export.checks import run_dataengine_checks
+from dagshub_import_export.checks import run_dataengine_checks, can_push_git, RepoNotReadyError
 from dagshub_import_export.dataengine import reimport_dataengine_datasources, reimport_dataengine_metadata
 from dagshub_import_export.git_module import reimport_git_repo
 from dagshub_import_export.labelstudio_import.importer import reimport_labelstudio
@@ -32,6 +32,22 @@ class DagshubRepoParamType(click.ParamType):
 
 
 DAGSHUB_REPO = DagshubRepoParamType()
+
+
+def run_preflight_checks(import_config: ImportConfig):
+    source, destination = import_config.source_and_destination
+
+    dest_info = destination.get_repo_info()
+    can_push = dest_info.permissions.get("push", False)
+    if not can_push:
+        raise RepoNotReadyError("You do not have write permission for the destination repository.")
+
+    if import_config.git:
+        can_push = can_push_git(source, destination)
+        import_config.git = can_push
+    if import_config.datasources:
+        run_dataengine_checks(import_config)
+    # TODO: check mlflow
 
 
 def reimport_repo(import_config: ImportConfig):
@@ -57,7 +73,6 @@ def reimport_repo(import_config: ImportConfig):
             reimport_mlflow(import_config, ds_map)
 
         if import_config.metadata:
-            run_dataengine_checks(import_config)
             logger.info("Copying Data Engine data")
             reimport_dataengine_metadata(import_config, ds_map)
 
@@ -100,6 +115,7 @@ def main(
             directory=directory,
         )
         logger.info(import_config)
+        run_preflight_checks(import_config)
         reimport_repo(import_config)
     finally:
         if tmp_dir is not None:
