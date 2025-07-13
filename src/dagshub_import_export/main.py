@@ -1,4 +1,5 @@
 import pathlib
+import sys
 from typing import Optional
 
 import click
@@ -222,5 +223,12 @@ def cli(
     )
 
 
+def entrypoint():
+    if len(sys.argv) == 1:
+        cli.main(["--help"])
+    else:
+        cli()
+
+
 if __name__ == "__main__":
-    cli()
+    entrypoint()

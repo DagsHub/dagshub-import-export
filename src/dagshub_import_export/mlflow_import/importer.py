@@ -157,7 +157,7 @@ def _import_mlflow(repo: RepoAPI, source_dir: str):
     _set_mlflow_auth(repo)
     client = _get_mlflow_client(repo)
 
-    # import_experiments(os.path.join(source_dir, "experiments"), mlflow_client=client)
+    # Importing models also imports all experiments
     import_models(source_dir, mlflow_client=client, delete_model=False)
 
 

@@ -25,7 +25,7 @@ dependencies = [
 ]
 
 [project.scripts]
-dagshub-import-export = "dagshub_import_export.main:cli"
+dagshub-import-export = "dagshub_import_export.main:entrypoint"
 
 [build-system]
 requires = ["hatchling"]
