@@ -42,7 +42,7 @@ def copy_rclone(source: RepoAPI, destination: RepoAPI, endpoint_fn: Callable, bu
         source_address,
         destination_address,
         "--no-update-modtime",
-        # "-q",  # Quiet mode to prevent rclone buffering the output over and over
+        "--progress",
     ]
 
     logger.info(f"Running rclone command: {' '.join(args)}")
