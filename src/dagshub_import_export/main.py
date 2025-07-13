@@ -193,7 +193,6 @@ def cli(
     directory: Path | None = None,
 ):
     """
-
     SOURCE_URL and DESTINATION_URL are the URLs of the source and destination repositories.
 
     \b
@@ -203,11 +202,39 @@ def cli(
     By default, all imports are enabled. If you provide a flag for a specific import, then only enabled imports will be run.
 
     \b
-    IMPORTANT: You need to make sure that the following is done, before running this command:
+    What's being imported:
+    - Git (--git)
+    - Data stored in the repo's DagsHub storage bucket (--bucket)
+    - DVC data (--dvc)
+    - MLflow experiments, models and artifacts (--mlflow)
+    - DagsHub Data Engine datasources and datasets (--datasources)
+    - DagsHub Data Engine metadata and annotations (--metadata)
+
+    \b
+    What's NOT being imported right now:
+    - Label Studio projects and tasks. Prior to running this tool,
+        you should click the green "Save" icon at the top of the Label Studio of the source repository's
+        project UI to save the tasks as metadata back to the datasource.
+        After that, importing the datasource metadata will import the Label Studio annotations.
+    - MLflow LLM traces
+    - Historical versions of Data Engine datasources metadata values.
+        Only the current version of metadata values is currently copied.
+
+    \b
+    IMPORTANT!
+    You need to make sure that the following is done, before running this command:
     - The source and destination repositories exist and are accessible from this computer,
       and you have permission to write to the destination.
     - (for datasources) The destination repository has the same connected integrations as the source repository.
     - (for MLflow) There is nothing in the destination repository's MLflow.
+    All of these conditions are checked before starting the import.
+
+    \b
+    TROUBLESHOOTING:
+    Following systems can be retried in case of failure:
+        git, dvc, bucket, datasources, metadata
+    Only MLflow is not idempotent, so if MLflow import fails, and you want to retry,
+    you will need to recreate the repository from scratch.
     """
     main(
         source_url,
