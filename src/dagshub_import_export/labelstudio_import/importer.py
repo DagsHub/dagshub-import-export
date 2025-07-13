@@ -17,9 +17,6 @@ if TYPE_CHECKING:
 
 def reimport_labelstudio(import_config: ImportConfig, ds_map: DataengineMappings):
     source, destination = import_config.source_and_destination
-    # FIXME: remove once done
-    logger.warning("Not implemented yet, skipping Label Studio import")
-    return
 
     source_ls = _get_ls_client(source)
     projects = source_ls.projects.list()

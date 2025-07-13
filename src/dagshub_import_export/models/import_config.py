@@ -44,18 +44,13 @@ class ImportConfig:
             datasources = True
             mlflow = True
             metadata = True
-            labelstudio = False  # TODO: set to True once implemented
+            labelstudio = True
 
-        if labelstudio:
-            logger.info("Label Studio import is not yet implemented.")
-            labelstudio = False
-
-        # TODO: enable once labelstudio is implemented
-        # if labelstudio and not metadata:
-        #     if not (metadata and datasources):
-        #         logger.info("Importing Label Studio requires importing datasources and metadata, enabling them.")
-        #         metadata = True
-        #         datasources = True
+        if labelstudio and not datasources:
+            # logger.info("Importing Label Studio requires importing datasources and metadata, enabling them.")
+            datasources = True
+            # TODO: turn on once merging, so it doesn't get skipped
+            # metadata = True
 
         if mlflow:
             if not datasources:
