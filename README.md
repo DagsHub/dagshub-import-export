@@ -7,7 +7,7 @@ __What's being copied:__
 - Data stored in the repo's DagsHub storage bucket
 - DVC managed data, provided that it's pushed to the DagsHub repo's builtin DVC remote
 - MLflow experiments
-- MLflow models (?)
+- MLflow models
 - MLflow artifacts
 - DagsHub Data Engine datasources and datasets, including all __latest__ metadata, annotations, etc.
 
