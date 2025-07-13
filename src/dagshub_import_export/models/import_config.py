@@ -37,19 +37,25 @@ class ImportConfig:
         directory: Path,
     ) -> "ImportConfig":
         if not any([git, dvc, repo_bucket, datasources, mlflow, metadata, labelstudio]):
+            # If everything is False, then enable everything
             git = True
             dvc = True
             repo_bucket = True
             datasources = True
             mlflow = True
             metadata = True
-            labelstudio = True
+            labelstudio = False  # TODO: set to True once implemented
 
-        if labelstudio and not metadata:
-            if not (metadata and datasources):
-                logger.info("Importing Label Studio requires importing datasources and metadata, enabling them.")
-                metadata = True
-                datasources = True
+        if labelstudio:
+            logger.info("Label Studio import is not yet implemented.")
+            labelstudio = False
+
+        # TODO: enable once labelstudio is implemented
+        # if labelstudio and not metadata:
+        #     if not (metadata and datasources):
+        #         logger.info("Importing Label Studio requires importing datasources and metadata, enabling them.")
+        #         metadata = True
+        #         datasources = True
 
         if mlflow:
             if not datasources:

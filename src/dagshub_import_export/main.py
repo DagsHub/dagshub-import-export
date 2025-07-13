@@ -172,7 +172,9 @@ def main(
 )
 @click.option("--mlflow", is_flag=True, help="Copy MLflow data")
 @click.option("--metadata", is_flag=True, help="Copy Data Engine metadata for all datasources")
-@click.option("--labelstudio", is_flag=True, help="Copy Label Studio projects (will also enable --metadata)")
+@click.option(
+    "--labelstudio", is_flag=True, help="[not implemented] Copy Label Studio projects (will also enable --metadata)."
+)
 @click.option(
     "--directory",
     type=click.Path(path_type=pathlib.Path),
