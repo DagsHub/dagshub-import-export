@@ -1,4 +1,5 @@
 import logging
+import os
 from pathlib import PurePosixPath
 from urllib.parse import urlparse
 
@@ -52,3 +53,5 @@ def init_logging():
     logging.getLogger("gql.transport.requests").setLevel(logging.WARNING)
     logging.getLogger("httpx").setLevel(logging.WARNING)
     urllib3.disable_warnings()
+    # Also tune the connection pool size for MLflow, so it doesn't spam urllib3 warnings
+    os.environ["MLFLOW_HTTP_POOL_MAXSIZE"] = "50"
