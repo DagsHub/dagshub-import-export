@@ -39,9 +39,12 @@ def reimport_dataengine_datasources(import_config: ImportConfig) -> DataengineMa
         get_already_imported_datasets(source_datasets, destination_existing_datasets),
     )
 
+    skipped_datasources = []
+    skipped_datasets = []
+
     for source_ds in source_datasources:
         if source_ds.source.id in res.datasources:
-            logger.info(f"Datasource {source_ds.source.name} already exists in destination, skipping")
+            skipped_datasources.append(source_ds.source.name)
             continue
         ds_path = source_ds.source.path
         revision = None
@@ -58,9 +61,7 @@ def reimport_dataengine_datasources(import_config: ImportConfig) -> DataengineMa
 
     for source_dataset in source_datasets:
         if source_dataset.assigned_dataset.dataset_id in res.datasets:
-            logger.info(
-                f"Dataset {source_dataset.assigned_dataset.dataset_name} already exists in destination, skipping"
-            )
+            skipped_datasets.append(source_dataset.assigned_dataset.dataset_name)
             continue
         # TODO: ordering might be important here (for versioning)
         ds_id = res.datasources[source_dataset.source.id]
@@ -68,6 +69,13 @@ def reimport_dataengine_datasources(import_config: ImportConfig) -> DataengineMa
         ds._query = source_dataset.assigned_dataset.query
         with_dataset = ds.save_dataset(name=source_dataset.assigned_dataset.dataset_name)
         res.datasets[source_dataset.assigned_dataset.dataset_id] = with_dataset.assigned_dataset.dataset_id
+
+    if skipped_datasources:
+        logger.info(
+            f"The following datasources were already created on the destination:\n{', '.join(skipped_datasources)}"
+        )
+    if skipped_datasets:
+        logger.info(f"The following datasets were already created on the destination:\n{', '.join(skipped_datasets)}")
 
     return res
 
