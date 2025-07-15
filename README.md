@@ -10,9 +10,10 @@ __What's being copied:__
 - MLflow models
 - MLflow artifacts
 - DagsHub Data Engine datasources and datasets, including all __latest__ metadata, annotations, etc.
+- Label Studio projects and tasks. (Might require answering to manual prompts to choose annotation fields)
 
 __Not copied yet:__
-- Label Studio projects and tasks. Prior to running this tool, you should click the green Save icon at the top of the Label Studio project UI to save the tasks as metadata back to Data Engine, which does get copied and can be used to re-create the Label Studio project and tasks in the new location.
+- Unsaved Label Studio tasks. Prior to running this tool, you should click the green Save icon at the top of the Label Studio project UI to save the tasks as metadata back to Data Engine, which does get copied and can be used to re-create the Label Studio project and tasks in the new location.
 - MLflow traces (LLM traces feature)
 - _Historical_ versions of Data Engine (datasources) metadata values. Only the current version of metadata values is currently copied. Contact us if copying the full history is a requirement.
 
