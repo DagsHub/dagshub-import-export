@@ -35,7 +35,7 @@ def reimport_labelstudio(import_config: ImportConfig, ds_map: DataengineMappings
 
     print(
         "\n\n!!WARNING!!\n\n"
-        "LabelStudio import might require answering to some prompts, "
+        "Label Studio import might require answering to some prompts, "
         "so make sure to not run it in a non-interactive environment.\n\n"
     )
 
@@ -79,7 +79,7 @@ def _get_projects_to_import(source_ls: "LabelStudio", dest_ls: "LabelStudio") ->
 
     if existing_projects:
         logger.info(
-            f"Projects that already exist in the target LabelStudio: {', '.join([p.title for p in existing_projects])}"
+            f"Projects that already exist in the target Label Studio: {', '.join([p.title for p in existing_projects])}"
         )
 
     return projects_to_import
@@ -168,7 +168,7 @@ def _choose_annotation_field(dest_ds: Datasource, source_project_info: "LabelStu
     else:
         return prompt_user_choice(
             dest_ds.annotation_fields,
-            "The source LabelStudio project doesn't have any annotation fields that match the ones in the datasource. "
+            "The source Label Studio project doesn't have any annotation fields that match the ones in the datasource. "
             "Please choose an annotation field to use as the LS task:",
         )
 

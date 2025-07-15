@@ -173,7 +173,9 @@ def main(
 @click.option("--mlflow", is_flag=True, help="Copy MLflow data")
 @click.option("--metadata", is_flag=True, help="Copy Data Engine metadata for all datasources")
 @click.option(
-    "--labelstudio", is_flag=True, help="[not implemented] Copy Label Studio projects (will also enable --metadata)."
+    "--labelstudio",
+    is_flag=True,
+    help="Copy Label Studio projects (will also enable --metadata). Might require manual interaction to answer prompts!!",
 )
 @click.option(
     "--directory",
@@ -211,10 +213,11 @@ def cli(
     - MLflow experiments, models and artifacts (--mlflow)
     - DagsHub Data Engine datasources and datasets (--datasources)
     - DagsHub Data Engine metadata and annotations (--metadata)
+    - Label Studio projects and tasks (--labelstudio) Warning: might require answering prompts during the import process.
 
     \b
     What's NOT being imported right now:
-    - Label Studio projects and tasks. Prior to running this tool,
+    - Unsaved Label Studio tasks. Prior to running this tool,
         you should click the green "Save" icon at the top of the Label Studio of the source repository's
         project UI to save the tasks as metadata back to the datasource.
         After that, importing the datasource metadata will import the Label Studio annotations.

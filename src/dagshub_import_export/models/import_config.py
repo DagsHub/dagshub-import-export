@@ -46,12 +46,6 @@ class ImportConfig:
             metadata = True
             labelstudio = True
 
-        if labelstudio and not datasources:
-            # logger.info("Importing Label Studio requires importing datasources and metadata, enabling them.")
-            datasources = True
-            # TODO: turn on once merging, so it doesn't get skipped
-            # metadata = True
-
         if mlflow:
             if not datasources:
                 logger.info("Importing MLflow requires Data Engine datasources, enabling it.")
@@ -61,6 +55,11 @@ class ImportConfig:
             if not datasources:
                 logger.info("Importing Data Engine metadata requires Data Engine datasources, enabling it.")
                 datasources = True
+
+        if labelstudio and not metadata:
+            logger.info("Importing Label Studio requires importing datasources and metadata, enabling them.")
+            datasources = True
+            metadata = True
 
         directory = directory / source.full_name
         directory = directory.absolute()
