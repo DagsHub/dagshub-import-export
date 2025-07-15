@@ -39,7 +39,6 @@ def reimport_labelstudio(import_config: ImportConfig, ds_map: DataengineMappings
         "so make sure to not run it in a non-interactive environment.\n\n"
     )
 
-    # TODO: add wait for workspace setup
     source_ls = _get_ls_client(source)
     destination_ls = _get_ls_client(destination)
 
