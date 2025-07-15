@@ -335,4 +335,10 @@ def get_ls_project_info(ls_client: "LabelStudio", project: "Project") -> Optiona
 
 
 def _get_ls_client(repo: RepoAPI):
+    _start_ls_workspace(repo)
     return get_label_studio_client(repo.full_name, host=repo.host)
+
+
+def _start_ls_workspace(repoApi: RepoAPI):
+    logger.info("Starting Label Studio workspace for repo %s", repoApi.full_name)
+    repoApi.list_annotation_projects()
