@@ -50,7 +50,11 @@ def reimport_dataengine_datasources(import_config: ImportConfig) -> DataengineMa
         revision = None
         if ds_path.startswith("repo://"):
             ds_path = ds_path.removeprefix(f"repo://{source.full_name}")
-            revision, ds_path = ds_path.split(":")
+            parts = ds_path.split(":", 1)
+            if len(parts) == 2:  # repo://user/repo/<revision>:<path>
+                revision, ds_path = parts
+            else:  # repo://user/repo/<path>
+                revision = source.default_branch
             revision = revision.removeprefix("/")
         # Repo bucket
         elif ds_path.startswith(f"s3://{source.repo_name}"):
