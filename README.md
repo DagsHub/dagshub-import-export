@@ -62,6 +62,6 @@ Includes a vendored version of MLflow's [mlflow-export-import](https://github.co
 
 # FAQ
 
-## Why is importing MLflow experiments is taking a very long time?
+## Why is importing MLflow experiments taking a very long time?
 
 Yes, unfortunately [MLflow's export-import](https://github.com/mlflow/mlflow-export-import) currently takes a long time to run. Please be patient with it and give it a chance to run un-interrupted, as stopping it in the middle will require restarting the whole process.
